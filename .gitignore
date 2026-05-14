@@ -1,0 +1,10 @@
+node_modules
+.next
+.DS_Store
+*.log
+.env*.local
+.vercel
+next-env.d.ts.bak
+
+# Local IDE / harness config (machine-specific paths)
+.claude/
