@@ -32,9 +32,13 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     document.documentElement.classList.add("lenis", "lenis-smooth");
 
+    // Expose for in-page jump links (e.g. ProjectsRail side nav)
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
       document.documentElement.classList.remove("lenis", "lenis-smooth");
     };
   }, []);

@@ -53,10 +53,6 @@ export default function VVBoutique() {
     <div
       ref={root}
       className="relative min-h-[100vh] w-full px-6 py-28 md:px-16 md:py-40"
-      style={{
-        background:
-          "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245,245,243,0.04), transparent 70%), linear-gradient(180deg, #07070a 0%, #0c0c10 100%)",
-      }}
     >
       <header className="mx-auto flex max-w-[1500px] items-center justify-between">
         <span className="mono opacity-70">Project · 01</span>

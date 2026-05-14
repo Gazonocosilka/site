@@ -52,12 +52,8 @@ export default function NexGen() {
     <div
       ref={root}
       className="relative min-h-[100vh] w-full overflow-hidden px-6 py-28 md:px-16 md:py-40"
-      style={{
-        background:
-          "linear-gradient(180deg, #07090c 0%, #0a0d12 50%, #050608 100%)",
-      }}
     >
-      {/* Distorted grid backdrop */}
+      {/* Distorted grid backdrop — accent over unified rail bg */}
       <BrutalistGrid />
 
       <header className="relative z-10 mx-auto flex max-w-[1500px] items-center justify-between">

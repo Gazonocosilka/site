@@ -49,13 +49,9 @@ export default function Beextrart() {
     <div
       ref={root}
       className="relative min-h-[100vh] w-full overflow-hidden px-6 py-28 md:px-16 md:py-40"
-      style={{
-        background:
-          "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,222,233,0.08), transparent 70%), linear-gradient(180deg, #060406 0%, #0c0810 100%)",
-      }}
     >
-      {/* Chrome shader backdrop */}
-      <div className="absolute inset-0 z-0 opacity-60">
+      {/* Chrome shader backdrop — soft, sits on top of unified rail bg */}
+      <div className="absolute inset-0 z-0 opacity-40">
         <ChromeBackdrop />
       </div>
 

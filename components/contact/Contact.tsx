@@ -8,7 +8,7 @@ const SOCIALS = [
   { label: "Instagram", href: "#" },
   { label: "Behance", href: "#" },
   { label: "LinkedIn", href: "#" },
-  { label: "Email", href: "mailto:hello@inna.studio" },
+  { label: "Email", href: "mailto:inka3553@gmail.com" },
 ];
 
 export default function Contact() {
@@ -127,7 +127,7 @@ export default function Contact() {
         <div className="mt-16">
           <MagneticButton
             as="a"
-            href="mailto:hello@inna.studio"
+            href="mailto:inka3553@gmail.com"
             cursor="view"
             cursorLabel="write"
             strength={0.45}
@@ -138,7 +138,7 @@ export default function Contact() {
               className="block h-2 w-2 rounded-full"
               style={{ background: "var(--accent)", boxShadow: "0 0 14px var(--accent)" }}
             />
-            hello@inna.studio
+            inka3553@gmail.com
           </MagneticButton>
         </div>
 
