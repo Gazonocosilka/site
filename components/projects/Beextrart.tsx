@@ -4,7 +4,7 @@ import { useEffect, useRef, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
-import MagneticButton from "../system/MagneticButton";
+import ProjectCTA from "./ProjectCTA";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -125,17 +125,6 @@ export default function Beextrart() {
               Liquid chrome backgrounds, holographic micro-labels and a
               soft pink accent thread the visual story together.
             </p>
-            <div className="mt-10">
-              <MagneticButton
-                cursor="view"
-                cursorLabel="open"
-                className="rounded-full border border-white/15 px-7 py-3.5 text-[11px] uppercase tracking-[0.3em] text-bone-50"
-                style={{ boxShadow: "0 0 30px rgba(255,222,233,0.22)" }}
-                strength={0.4}
-              >
-                Open Case
-              </MagneticButton>
-            </div>
           </div>
           <div className="col-span-12 grid grid-cols-3 gap-6 text-[11px] md:col-span-5">
             {[
@@ -155,6 +144,11 @@ export default function Beextrart() {
         <div className="col-span-12 mt-12 grid grid-cols-2 gap-6">
           <div className="slot" data-asset="bee-shot-02" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
           <div className="slot" data-asset="bee-shot-03" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
+        </div>
+
+        {/* Unified bottom CTA */}
+        <div className="col-span-12">
+          <ProjectCTA accent="pink" />
         </div>
       </div>
 

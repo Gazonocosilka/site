@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
-import MagneticButton from "../system/MagneticButton";
+import ProjectCTA from "./ProjectCTA";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -159,7 +159,7 @@ export default function NexGen() {
           ))}
         </div>
 
-        <div className="col-span-12 mt-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+        <div className="col-span-12 mt-12">
           <div className="grid grid-cols-3 gap-6 text-[11px]">
             {[
               ["Year", "2026"],
@@ -172,14 +172,11 @@ export default function NexGen() {
               </div>
             ))}
           </div>
-          <MagneticButton
-            cursor="view"
-            cursorLabel="execute"
-            className="rounded-[2px] border border-white/15 bg-white/5 px-7 py-3.5 text-[11px] uppercase tracking-[0.32em] text-bone-50"
-            strength={0.4}
-          >
-            Execute → Case
-          </MagneticButton>
+        </div>
+
+        {/* Unified bottom CTA */}
+        <div className="col-span-12">
+          <ProjectCTA accent="blue" />
         </div>
       </div>
 

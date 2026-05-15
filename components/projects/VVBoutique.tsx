@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
-import MagneticButton from "../system/MagneticButton";
+import ProjectCTA from "./ProjectCTA";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -108,16 +108,6 @@ export default function VVBoutique() {
             ))}
           </div>
 
-          <div className="mt-12">
-            <MagneticButton
-              cursor="view"
-              cursorLabel="case"
-              className="glass rounded-full px-8 py-4 text-[11px] uppercase tracking-[0.32em] text-bone-50"
-              strength={0.4}
-            >
-              View Case
-            </MagneticButton>
-          </div>
         </div>
 
         {/* Wide editorial slot */}
@@ -133,6 +123,11 @@ export default function VVBoutique() {
         <div className="col-span-12 grid grid-cols-2 gap-6 mt-10 md:col-span-12 md:mt-12">
           <div className="slot" data-asset="vv-detail-03" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
           <div className="slot" data-asset="vv-detail-04" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
+        </div>
+
+        {/* Unified bottom CTA */}
+        <div className="col-span-12">
+          <ProjectCTA accent="neutral" />
         </div>
       </div>
     </div>

@@ -91,6 +91,16 @@ export default function Hero() {
         Scroll · Begin
       </div>
 
+      {/* Soft scrim behind the title — keeps chrome reflections from competing with type */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[4]"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 38% at 50% 48%, rgba(5,5,5,0.62) 0%, rgba(5,5,5,0.38) 35%, rgba(5,5,5,0) 70%)",
+        }}
+      />
+
       {/* Centered editorial title */}
       <div
         ref={titleRef}
@@ -115,6 +125,8 @@ export default function Hero() {
             lineHeight: 0.88,
             letterSpacing: "-0.06em",
             color: "var(--bone-50)",
+            textShadow:
+              "0 2px 24px rgba(5,5,5,0.55), 0 0 40px rgba(5,5,5,0.45)",
           }}
         >
           INNA
@@ -127,6 +139,7 @@ export default function Hero() {
           stagger={0.012}
           by="word"
           className="mt-6 max-w-xl text-balance text-[13px] uppercase leading-relaxed tracking-[0.3em] text-bone-200/80"
+          style={{ textShadow: "0 1px 14px rgba(5,5,5,0.7)" }}
         >
           Designing digital experiences that feel cinematic, emotional and unforgettable.
         </SplitText>
