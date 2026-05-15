@@ -3,13 +3,10 @@
 import { useEffect, useRef, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import dynamic from "next/dynamic";
 import SplitText from "../system/SplitText";
 import MagneticButton from "../system/MagneticButton";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
-
-const ChromeBackdrop = dynamic(() => import("./ChromeBackdrop"), { ssr: false });
 
 export default function Beextrart() {
   const root = useRef<HTMLDivElement>(null);
@@ -50,11 +47,6 @@ export default function Beextrart() {
       ref={root}
       className="relative min-h-[100vh] w-full overflow-hidden px-6 py-28 md:px-16 md:py-40"
     >
-      {/* Chrome shader backdrop — soft, sits on top of unified rail bg */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <ChromeBackdrop />
-      </div>
-
       <header className="relative z-10 mx-auto flex max-w-[1500px] items-center justify-between">
         <span className="mono opacity-70">Project · 02</span>
         <span className="mono" style={{ color: "var(--glow-pink)", opacity: 0.85 }}>

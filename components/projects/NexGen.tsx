@@ -53,9 +53,6 @@ export default function NexGen() {
       ref={root}
       className="relative min-h-[100vh] w-full overflow-hidden px-6 py-28 md:px-16 md:py-40"
     >
-      {/* Distorted grid backdrop — accent over unified rail bg */}
-      <BrutalistGrid />
-
       <header className="relative z-10 mx-auto flex max-w-[1500px] items-center justify-between">
         <span className="mono opacity-70">Project · 03</span>
         <span className="mono" style={{ color: "var(--glow-blue)", opacity: 0.85 }}>
@@ -203,20 +200,5 @@ export default function NexGen() {
         }
       `}</style>
     </div>
-  );
-}
-
-function BrutalistGrid() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 z-0"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(139,168,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(139,168,255,0.05) 1px, transparent 1px)",
-        backgroundSize: "80px 80px",
-        maskImage: "radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 80%)",
-      }}
-    />
   );
 }

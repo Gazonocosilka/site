@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import VVBoutique from "./VVBoutique";
 import Beextrart from "./Beextrart";
 import NexGen from "./NexGen";
+import RailBackground from "./RailBackground";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +22,16 @@ declare global {
   }
 }
 
+/**
+ * Bell-curve opacity around peak position. Width controls how broad the lobe is —
+ * larger width = longer crossfade overlap with neighbouring projects.
+ */
+function bell(progress: number, peak: number, width = 0.35): number {
+  const x = (progress - peak) / width;
+  // Smooth gaussian-ish curve clamped to [0,1]
+  return Math.max(0, Math.min(1, Math.exp(-x * x * 3.5)));
+}
+
 export default function ProjectsRail() {
   const root = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -32,29 +43,11 @@ export default function ProjectsRail() {
 
     const ctx = gsap.context(() => {
       const sections = root.current!.querySelectorAll<HTMLElement>(".rail-section");
-      const layers = bgRef.current?.querySelectorAll<HTMLElement>(".bg-layer") ?? [];
+      const bg = bgRef.current;
+      const layers = bg?.querySelectorAll<HTMLElement>(".bg-layer") ?? [];
 
-      // Unified background fades in once we enter the rail and out when we leave
-      if (bgRef.current) {
-        gsap.set(bgRef.current, { opacity: 0 });
-        ScrollTrigger.create({
-          trigger: root.current,
-          start: "top bottom",
-          end: "top 60%",
-          scrub: 1,
-          onUpdate: (st) => gsap.set(bgRef.current, { opacity: st.progress }),
-        });
-        ScrollTrigger.create({
-          trigger: root.current,
-          start: "bottom 80%",
-          end: "bottom 30%",
-          scrub: 1,
-          onUpdate: (st) => gsap.set(bgRef.current, { opacity: 1 - st.progress }),
-        });
-      }
-
+      // Activate side-index based on which project is centered
       sections.forEach((s, i) => {
-        // Activate side index
         ScrollTrigger.create({
           trigger: s,
           start: "top 50%",
@@ -63,21 +56,60 @@ export default function ProjectsRail() {
             if (st.isActive) setActive(i);
           },
         });
+      });
 
-        // Crossfade the unified background layer for this project
-        if (layers[i]) {
-          gsap.set(layers[i], { opacity: i === 0 ? 1 : 0 });
+      if (!bg || layers.length < 3) return;
+
+      // Set initial state — layer 0 (VV) on, others off
+      gsap.set(layers[0], { opacity: 1 });
+      gsap.set(layers[1], { opacity: 0 });
+      gsap.set(layers[2], { opacity: 0 });
+
+      // Reduced motion: jump cuts via ScrollTrigger.toggle, no scrub
+      if (reduce) {
+        sections.forEach((s, i) => {
           ScrollTrigger.create({
             trigger: s,
-            start: "top 80%",
-            end: "top 30%",
-            scrub: reduce ? false : 1.4,
-            onUpdate: (st) => {
-              gsap.set(layers[i], { opacity: st.progress });
-              if (i > 0) gsap.set(layers[i - 1], { opacity: 1 - st.progress });
+            start: "top 60%",
+            end: "bottom 40%",
+            onToggle: (st) => {
+              if (!st.isActive) return;
+              layers.forEach((l, j) => gsap.set(l, { opacity: i === j ? 1 : 0 }));
             },
           });
-        }
+        });
+        return;
+      }
+
+      // === Master scrubbed crossfade across the entire rail ===
+      // st.progress = 0..1 over the full ProjectsRail container.
+      // Compute bell-curve opacity for each layer at three peak positions.
+      // Whole-rail container is intro panel (small) + 3 project sections, so
+      // the peaks are placed at roughly the centre of each project.
+      const compute = (p: number) => {
+        // Place peaks deeper into the rail to account for the intro panel (~10%)
+        const peaks = [0.22, 0.55, 0.85];
+        const raw = peaks.map((peak) => bell(p, peak, 0.22));
+        // Re-normalize so total opacity stays close to 1 (prevents brightness dips)
+        const total = raw.reduce((a, b) => a + b, 0) || 1;
+        return raw.map((v) => v / total);
+      };
+
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1.2,
+        onUpdate: (st) => {
+          // Bg overall fade-in/out near edges so it doesn't bleed past the rail
+          const enter = gsap.utils.clamp(0, 1, st.progress * 4);
+          const exit = gsap.utils.clamp(0, 1, (1 - st.progress) * 4);
+          const bgOpacity = Math.min(enter, exit);
+          gsap.set(bg, { opacity: bgOpacity });
+
+          const opacities = compute(st.progress);
+          opacities.forEach((o, i) => gsap.set(layers[i], { opacity: o }));
+        },
       });
     }, root);
 
@@ -96,72 +128,7 @@ export default function ProjectsRail() {
 
   return (
     <section ref={root} className="relative w-full" aria-label="Selected work">
-      {/* Unified moving background — visible only while the projects rail is on screen */}
-      <div
-        ref={bgRef}
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-0 will-change-[opacity]"
-      >
-        {/* Base atmospheric layer always present underneath */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(122,127,135,0.10), transparent 70%), linear-gradient(180deg, #06070a 0%, #08090d 50%, #06070a 100%)",
-          }}
-        />
-
-        {/* Layer 0 — V&V Boutique mood (editorial / soft white spotlight) */}
-        <div
-          className="bg-layer absolute inset-0 transition-opacity"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 70% at 30% 30%, rgba(245,245,243,0.06), transparent 70%), radial-gradient(ellipse 50% 60% at 80% 80%, rgba(201,199,194,0.05), transparent 70%)",
-          }}
-        />
-
-        {/* Layer 1 — BEEXTRART mood (chrome with pink + violet glow) */}
-        <div
-          className="bg-layer absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,222,233,0.08), transparent 70%), radial-gradient(ellipse 80% 60% at 80% 70%, rgba(183,167,255,0.10), transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(214,214,255,0.06), transparent 70%)",
-          }}
-        />
-
-        {/* Layer 2 — NexGen mood (electric blue grid wash) */}
-        <div
-          className="bg-layer absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 60% at 50% 30%, rgba(139,168,255,0.12), transparent 70%), radial-gradient(ellipse 50% 80% at 100% 100%, rgba(139,168,255,0.07), transparent 70%)",
-          }}
-        />
-
-        {/* Animated grid overlay — feels like a continuous techno surface drifting under all 3 */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(139,168,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,168,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "120px 120px",
-            maskImage:
-              "radial-gradient(ellipse 80% 90% at 50% 50%, black 30%, transparent 80%)",
-            animation: "gridDrift 60s linear infinite",
-          }}
-        />
-
-        {/* Soft moving glow — sweeps slowly across, ties the three sections together */}
-        <div
-          className="absolute -inset-[10%]"
-          style={{
-            background:
-              "radial-gradient(circle 30vmax at 50% 50%, rgba(139,168,255,0.06), transparent 70%)",
-            animation: "ambientGlow 14s var(--ease-cinema) infinite alternate",
-            filter: "blur(40px)",
-          }}
-        />
-      </div>
+      <RailBackground ref={bgRef} />
 
       {/* Intro panel */}
       <div className="relative z-[2] mx-auto flex max-w-[1500px] flex-col items-start justify-between gap-10 px-6 pb-10 pt-32 md:px-12 md:pb-20 md:pt-44 md:flex-row md:items-end">
@@ -226,17 +193,6 @@ export default function ProjectsRail() {
       <div id="project-nex" className="rail-section relative z-[2]">
         <NexGen />
       </div>
-
-      <style jsx global>{`
-        @keyframes gridDrift {
-          from { background-position: 0 0, 0 0; }
-          to { background-position: 120px 120px, 120px 120px; }
-        }
-        @keyframes ambientGlow {
-          from { transform: translate(-10%, -10%) scale(1); }
-          to { transform: translate(10%, 10%) scale(1.15); }
-        }
-      `}</style>
     </section>
   );
 }
