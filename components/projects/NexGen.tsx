@@ -134,29 +134,121 @@ export default function NexGen() {
           ))}
         </div>
 
-        {/* Console-style readouts */}
-        <div className="col-span-12 mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
-          {[
-            ["UPTIME", "99.92%"],
-            ["FRAMES", "60 / s"],
-            ["MODULES", "14 active"],
-            ["BUILD", "v2.6.1"],
-          ].map(([k, v]) => (
-            <div key={k} className="bevel rounded-[2px] p-3">
-              <div className="mono text-[8px] opacity-60">{k}</div>
-              <div className="mt-2 text-[14px] tracking-[0.04em] text-bone-50">{v}</div>
-              <div className="mt-2 h-px w-full overflow-hidden bg-white/5">
-                <span
-                  className="block h-full"
-                  style={{
-                    width: "60%",
-                    background: "linear-gradient(90deg, var(--glow-blue), transparent)",
-                    animation: "pulseBar 3.4s var(--ease-cinema) infinite",
-                  }}
-                />
-              </div>
+        {/* Build manifest — what was actually delivered for the project */}
+        <div className="col-span-12 mt-12 md:mt-20">
+          <div className="mb-6 flex items-baseline justify-between">
+            <span className="mono opacity-60">Build Manifest · 04 modules</span>
+            <span className="mono flex items-center gap-2 opacity-80">
+              <span
+                className="block h-1.5 w-1.5 rounded-full"
+                style={{
+                  background: "var(--glow-blue)",
+                  boxShadow: "0 0 10px var(--glow-blue)",
+                  animation: "pulseDot 2s ease-in-out infinite",
+                }}
+              />
+              Live
+            </span>
+          </div>
+
+          <div className="relative">
+            {/* Connecting timeline line behind the cards */}
+            <div className="pointer-events-none absolute left-6 right-6 top-[42px] hidden h-px bg-white/8 md:block">
+              <span
+                className="block h-full"
+                style={{
+                  width: "100%",
+                  background:
+                    "linear-gradient(90deg, transparent, var(--glow-blue) 20%, var(--glow-blue) 80%, transparent)",
+                  animation: "scanGlow 6s var(--ease-cinema) infinite",
+                }}
+              />
             </div>
-          ))}
+
+            <div className="relative grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5">
+              {[
+                {
+                  id: "01",
+                  title: "Identity",
+                  desc: "Logomark, type system, motion mark, brand book.",
+                },
+                {
+                  id: "02",
+                  title: "Interface",
+                  desc: "60+ components, dark mode, responsive grid system.",
+                },
+                {
+                  id: "03",
+                  title: "Motion",
+                  desc: "Scroll-tied scenes, 24 cinematic transitions, micro-fx.",
+                },
+                {
+                  id: "04",
+                  title: "System",
+                  desc: "Design tokens, accessibility audit, dev handover.",
+                },
+              ].map((m) => (
+                <div
+                  key={m.id}
+                  className="relative bevel rounded-[2px] p-5"
+                  style={{
+                    background: "rgba(15,15,16,0.55)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                  }}
+                >
+                  {/* Top row: id + status node */}
+                  <div className="mb-5 flex items-center justify-between">
+                    <span className="mono opacity-70">M.{m.id}</span>
+                    <span
+                      aria-hidden
+                      className="block h-2.5 w-2.5 rounded-full"
+                      style={{
+                        background: "var(--glow-blue)",
+                        boxShadow: "0 0 14px var(--glow-blue)",
+                      }}
+                    />
+                  </div>
+                  {/* Title */}
+                  <h3
+                    className="display text-bone-50"
+                    style={{
+                      fontSize: 22,
+                      lineHeight: 1.05,
+                      letterSpacing: "-0.02em",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {m.title}
+                  </h3>
+                  {/* Description */}
+                  <p className="mt-3 text-[12px] leading-[1.55] text-bone-200/75">
+                    {m.desc}
+                  </p>
+                  {/* Corner ticks */}
+                  {[
+                    { top: -5, left: -5 },
+                    { top: -5, right: -5 },
+                    { bottom: -5, left: -5 },
+                    { bottom: -5, right: -5 },
+                  ].map((p, j) => (
+                    <span
+                      key={j}
+                      aria-hidden
+                      className="pointer-events-none absolute h-2 w-2 border-white/30"
+                      style={{
+                        ...p,
+                        borderTopWidth: p.top !== undefined ? 1 : 0,
+                        borderBottomWidth: p.bottom !== undefined ? 1 : 0,
+                        borderLeftWidth: p.left !== undefined ? 1 : 0,
+                        borderRightWidth: p.right !== undefined ? 1 : 0,
+                      }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="col-span-12 mt-12">
@@ -194,6 +286,14 @@ export default function NexGen() {
         @keyframes pulseBar {
           0%, 100% { transform: translateX(-30%); opacity: 0.3; }
           50% { transform: translateX(40%); opacity: 1; }
+        }
+        @keyframes scanGlow {
+          0%, 100% { opacity: 0.55; transform: scaleX(0.95); transform-origin: left; }
+          50% { opacity: 1; transform: scaleX(1); }
+        }
+        @keyframes pulseDot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.55; transform: scale(0.9); }
         }
       `}</style>
     </div>
