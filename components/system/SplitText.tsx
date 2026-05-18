@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, ReactNode, CSSProperties } from "react";
+import React, { useEffect, useRef, ReactNode, CSSProperties } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -12,7 +12,7 @@ interface Props {
   children: string;
   className?: string;
   style?: CSSProperties;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   delay?: number;
   stagger?: number;
   by?: "char" | "word" | "line";
@@ -81,7 +81,12 @@ export default function SplitText({
     }
   }, [children, by, delay, stagger, blur, trigger, start]);
 
-  const Tag = as as React.ElementType;
+  const Tag = as as unknown as React.ComponentType<{
+    ref?: React.Ref<HTMLElement>;
+    className?: string;
+    style?: CSSProperties;
+    children?: ReactNode;
+  }>;
   const text = children;
 
   let nodes: ReactNode;
