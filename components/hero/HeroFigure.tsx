@@ -97,25 +97,40 @@ export default function HeroFigure() {
     const targetMix = mode === "dimension" ? 1 : 0.3;
     holoMat.uniforms.uMix.value += (targetMix - holoMat.uniforms.uMix.value) * 0.04;
 
+    // Cursor energy — used to drive multiple bits of motion at once
+    const cursorR = Math.hypot(mouse.x, mouse.y); // 0..~1
+    const cursorEnergy = Math.min(1, cursorR);     // clamp to 0..1
+
     if (group.current) {
+      // breathing
       group.current.position.y = Math.sin(t * 0.5) * 0.05 - 0.05;
-      group.current.rotation.y += (mouse.x * 0.35 - group.current.rotation.y) * 0.04;
-      group.current.rotation.x += (-mouse.y * 0.18 - group.current.rotation.x) * 0.04;
+      // assembly tilts with stronger cursor influence
+      group.current.rotation.y += (mouse.x * 0.55 - group.current.rotation.y) * 0.06;
+      group.current.rotation.x += (-mouse.y * 0.28 - group.current.rotation.x) * 0.06;
     }
 
     // Inner pearl distortion ramps with cursor proximity to center
     if (core.current) {
-      const dist = Math.hypot(mouse.x, mouse.y);
-      const targetDistort = 0.28 + dist * 0.4 + (mode === "dimension" ? 0.18 : 0);
-      distortRef.current.distort += (targetDistort - distortRef.current.distort) * 0.05;
+      const targetDistort = 0.28 + cursorR * 0.55 + (mode === "dimension" ? 0.18 : 0);
+      distortRef.current.distort += (targetDistort - distortRef.current.distort) * 0.07;
       const distMat = (core.current.material as unknown) as { distort: number };
       if (distMat) distMat.distort = distortRef.current.distort;
     }
 
-    // Letter "I" slowly counter-rotates — feels alive but not distracting
+    // Letter "I" — actively tilts to follow cursor (yaw + pitch)
+    // plus a baseline slow rotation + bob so it always feels alive.
     if (letter.current) {
-      letter.current.rotation.y = Math.sin(t * 0.35) * 0.5 + t * 0.08;
-      letter.current.position.y = Math.sin(t * 0.6) * 0.04;
+      const targetYaw = mouse.x * 0.9 + Math.sin(t * 0.35) * 0.25 + t * 0.05;
+      const targetPitch = -mouse.y * 0.5 + Math.sin(t * 0.4) * 0.1;
+      letter.current.rotation.y += (targetYaw - letter.current.rotation.y) * 0.08;
+      letter.current.rotation.x += (targetPitch - letter.current.rotation.x) * 0.08;
+      // Bob + cursor-driven Z push (slightly forward when cursor is near)
+      letter.current.position.y = Math.sin(t * 0.6) * 0.04 - mouse.y * 0.06;
+      letter.current.position.x = mouse.x * 0.05;
+      letter.current.position.z = cursorEnergy * 0.15;
+      // Energetic scale pulse when cursor is near center
+      const s = 1 + cursorEnergy * 0.06 + Math.sin(t * 2) * 0.01;
+      letter.current.scale.setScalar(0.55 * s);
     }
   });
 
@@ -217,16 +232,24 @@ function OrbitingShard({
   tiltY?: number;
 }) {
   const ref = useRef<THREE.Mesh>(null);
-  useFrame((s) => {
+  const { mouse } = useThree();
+  const accRef = useRef(0);
+  const speedMult = useRef(1);
+  useFrame((s, delta) => {
     if (!ref.current) return;
-    const t = s.clock.elapsedTime * speed + offset;
+    // Cursor proximity ramps orbit speed
+    const e = 1 - Math.min(1, Math.hypot(mouse.x, mouse.y));
+    const target = 1 + e * 2.2;
+    speedMult.current += (target - speedMult.current) * 0.05;
+    accRef.current += delta * speed * speedMult.current;
+    const t = accRef.current + offset;
     ref.current.position.set(
       Math.cos(t) * radius,
       Math.sin(t * 0.7 + tiltY) * radius * 0.25,
       Math.sin(t) * radius
     );
-    ref.current.rotation.x += 0.01;
-    ref.current.rotation.y += 0.013;
+    ref.current.rotation.x += 0.01 * speedMult.current;
+    ref.current.rotation.y += 0.013 * speedMult.current;
   });
   return (
     <mesh ref={ref}>
