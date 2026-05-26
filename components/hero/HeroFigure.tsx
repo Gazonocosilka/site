@@ -201,8 +201,8 @@ export default function HeroFigure() {
         />
       </mesh>
 
-      {/* Sparse ambient particles drifting inside the sphere */}
-      <InnerDust count={55} radius={0.9} />
+      {/* Luminous particle blob — lives INSIDE the chrome sphere, flows with cursor */}
+      <InnerBlob count={220} radius={0.85} />
 
       {/* Orbiting chrome facets */}
       <OrbitingShard radius={2.0} speed={0.32} offset={0} size={0.22} type="oct" envMap={envMap} />
@@ -218,17 +218,17 @@ export default function HeroFigure() {
 }
 
 /**
- * Sparse ambient particles inside the sphere — like motes of light suspended
- * in glass. Few of them, slow gentle drift, very subtle. Not a blob.
+ * Inner luminous blob — confined inside the chrome sphere.
+ * Lives in HeroFigure's group so it scales with the figure.
  */
-function InnerDust({ count = 55, radius = 0.9 }: { count?: number; radius?: number }) {
+function InnerBlob({ count = 220, radius = 0.85 }: { count?: number; radius?: number }) {
   const ref = useRef<THREE.Points>(null);
   const { mouse } = useThree();
 
   const home = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      // Uniform sample inside a unit sphere (volumetric)
+      // Uniform sample inside a unit sphere
       let x = 0, y = 0, z = 0, len = 0;
       do {
         x = Math.random() * 2 - 1;
@@ -247,13 +247,13 @@ function InnerDust({ count = 55, radius = 0.9 }: { count?: number; radius?: numb
 
   const speeds = useMemo(() => {
     const arr = new Float32Array(count);
-    for (let i = 0; i < count; i++) arr[i] = 0.15 + Math.random() * 0.25; // much slower
+    for (let i = 0; i < count; i++) arr[i] = 0.4 + Math.random() * 0.8;
     return arr;
   }, [count]);
 
   const sizes = useMemo(() => {
     const arr = new Float32Array(count);
-    for (let i = 0; i < count; i++) arr[i] = 0.012 + Math.random() * 0.035; // smaller
+    for (let i = 0; i < count; i++) arr[i] = 0.02 + Math.random() * 0.04;
     return arr;
   }, [count]);
 
@@ -262,6 +262,8 @@ function InnerDust({ count = 55, radius = 0.9 }: { count?: number; radius?: numb
   useFrame((state) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
+    const mx = mouse.x;
+    const my = mouse.y;
     const arr = (ref.current.geometry.attributes.position as THREE.BufferAttribute).array as Float32Array;
 
     for (let i = 0; i < count; i++) {
@@ -269,22 +271,22 @@ function InnerDust({ count = 55, radius = 0.9 }: { count?: number; radius?: numb
       const hy = home[i * 3 + 1];
       const hz = home[i * 3 + 2];
       const sp = speeds[i];
-      const phase = i * 0.41;
-      // Small ambient drift — much smaller amplitude than the blob (~0.05 vs 0.18)
-      const dx = Math.sin(t * sp + hy * 2 + phase) * 0.05;
-      const dy = Math.sin(t * sp * 0.9 + hz * 2 + phase) * 0.05;
-      const dz = Math.cos(t * sp * 1.1 + hx * 2 + phase) * 0.05;
-      // Very gentle cursor influence (10% of previous)
-      const pullX = (mouse.x * 0.2 - hx) * 0.02;
-      const pullY = (mouse.y * 0.2 - hy) * 0.02;
+      const phase = i * 0.31;
+      // Curl-like swirl for fluid blob motion
+      const dx = Math.sin(t * sp * 0.7 + hy * 4 + phase) * 0.18;
+      const dy = Math.sin(t * sp * 0.6 + hz * 4 + phase) * 0.18;
+      const dz = Math.cos(t * sp * 0.8 + hx * 4 + phase) * 0.18;
+      // Gentle cursor pull, projected into figure space
+      const pullX = (mx * 0.4 - hx) * 0.08;
+      const pullY = (my * 0.4 - hy) * 0.08;
       arr[i * 3] = hx + dx + pullX;
       arr[i * 3 + 1] = hy + dy + pullY;
       arr[i * 3 + 2] = hz + dz;
     }
     ref.current.geometry.attributes.position.needsUpdate = true;
 
-    // Slow self-rotation keeps it alive
-    ref.current.rotation.y = t * 0.06;
+    // Slow self-rotation keeps it alive with no cursor input
+    ref.current.rotation.y = t * 0.12;
   });
 
   return (
@@ -294,10 +296,10 @@ function InnerDust({ count = 55, radius = 0.9 }: { count?: number; radius?: numb
         <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.025}
+        size={0.035}
         sizeAttenuation
         transparent
-        opacity={0.65}
+        opacity={0.9}
         color="#D6D6FF"
         depthWrite={false}
         blending={THREE.AdditiveBlending}
