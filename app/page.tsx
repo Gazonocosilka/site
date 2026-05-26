@@ -5,7 +5,7 @@ import Contact from "@/components/contact/Contact";
 
 export default function Page() {
   return (
-    <main className="relative w-full overflow-hidden bg-[#050505] text-bone-50">
+    <main className="relative w-full overflow-hidden bg-[#050505] text-bone-50 ambient-bg">
       <Hero />
       <About />
       <ProjectsRail />

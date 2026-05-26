@@ -7,22 +7,26 @@ import * as THREE from "three";
 import { useDimension } from "../system/DimensionContext";
 
 /**
- * Sculptural chrome form:
- *  - central distorted icosphere (liquid mercury feel) with chrome + holographic blend
- *  - orbiting smaller chrome facets (octahedron, tetrahedron) at varying radii / speeds
- *  - thin orbital ring + a slow inner glass shell
- *  - reacts to mouse: whole assembly tilts; central form distortion intensity ramps with cursor distance from center
+ * Sculptural chrome form with the designer's initial ("I") sitting inside it:
+ *  - outer transmissive glass shell (refracts and gives the whole form depth)
+ *  - central chrome "I" — Inna's mark, built from chrome primitives, slowly rotates
+ *  - small displaced chrome pearl behind the I (sense of inner core / pearl-in-shell)
+ *  - close holographic fresnel halo wrapping the I
+ *  - orbiting chrome facets at varying radii / speeds
+ *  - thin orbital rings around the whole assembly
+ * Mouse: whole assembly tilts; chrome pearl distortion ramps with cursor distance.
  */
 export default function HeroFigure() {
   const group = useRef<THREE.Group>(null);
   const core = useRef<THREE.Mesh>(null);
-  const distortRef = useRef<{ distort: number; speed: number }>({ distort: 0.38, speed: 1.6 });
+  const letter = useRef<THREE.Group>(null);
+  const distortRef = useRef<{ distort: number }>({ distort: 0.32 });
   const { mode } = useDimension();
   const { mouse, viewport } = useThree();
 
   const envMap = useEnvCubeStub();
 
-  // Holographic outer shell uniforms (fresnel + iridescent bands)
+  // Holographic fresnel shell shader (wraps the I)
   const holoMat = useMemo(() => {
     return new THREE.ShaderMaterial({
       uniforms: {
@@ -71,6 +75,22 @@ export default function HeroFigure() {
     });
   }, []);
 
+  // Polished chrome — used for the "I" and the small inner pearl
+  const chromeMat = useMemo(
+    () =>
+      new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color("#e6e8f0"),
+        metalness: 1,
+        roughness: 0.16,
+        clearcoat: 1,
+        clearcoatRoughness: 0.08,
+        envMap,
+        envMapIntensity: 1.6,
+        reflectivity: 1,
+      }),
+    [envMap]
+  );
+
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     holoMat.uniforms.uTime.value = t;
@@ -83,15 +103,19 @@ export default function HeroFigure() {
       group.current.rotation.x += (-mouse.y * 0.18 - group.current.rotation.x) * 0.04;
     }
 
-    // Cursor proximity inflates distortion
+    // Inner pearl distortion ramps with cursor proximity to center
     if (core.current) {
-      core.current.rotation.y += 0.0025;
-      core.current.rotation.x += 0.0014;
       const dist = Math.hypot(mouse.x, mouse.y);
-      const targetDistort = 0.32 + dist * 0.45 + (mode === "dimension" ? 0.18 : 0);
+      const targetDistort = 0.28 + dist * 0.4 + (mode === "dimension" ? 0.18 : 0);
       distortRef.current.distort += (targetDistort - distortRef.current.distort) * 0.05;
       const distMat = (core.current.material as unknown) as { distort: number };
       if (distMat) distMat.distort = distortRef.current.distort;
+    }
+
+    // Letter "I" slowly counter-rotates — feels alive but not distracting
+    if (letter.current) {
+      letter.current.rotation.y = Math.sin(t * 0.35) * 0.5 + t * 0.08;
+      letter.current.position.y = Math.sin(t * 0.6) * 0.04;
     }
   });
 
@@ -99,26 +123,7 @@ export default function HeroFigure() {
 
   return (
     <group ref={group} scale={scale}>
-      {/* Central liquid chrome icosphere */}
-      <mesh ref={core}>
-        <icosahedronGeometry args={[1.05, 32]} />
-        <MeshDistortMaterial
-          envMap={envMap}
-          envMapIntensity={1.4}
-          metalness={1}
-          roughness={0.18}
-          color="#dcdfea"
-          distort={0.4}
-          speed={1.6}
-        />
-      </mesh>
-
-      {/* Holographic shell over the core */}
-      <mesh material={holoMat} scale={1.03}>
-        <icosahedronGeometry args={[1.05, 24]} />
-      </mesh>
-
-      {/* Thin glass shell (subtle inner refraction) */}
+      {/* Outer transmissive glass shell */}
       <mesh scale={1.45}>
         <icosahedronGeometry args={[1.05, 6]} />
         <MeshTransmissionMaterial
@@ -132,6 +137,52 @@ export default function HeroFigure() {
           opacity={0.18}
           transparent
           backside={false}
+        />
+      </mesh>
+
+      {/* Holographic halo wrapping the I, sized small to feel intimate */}
+      <mesh material={holoMat} scale={0.95}>
+        <icosahedronGeometry args={[1.0, 24]} />
+      </mesh>
+
+      {/* The designer's initial — chrome serif "I" — built from three chrome blocks */}
+      <group ref={letter} scale={0.55}>
+        {/* Top serif */}
+        <mesh position={[0, 1.15, 0]} material={chromeMat}>
+          <boxGeometry args={[1.1, 0.18, 0.32]} />
+        </mesh>
+        {/* Stem */}
+        <mesh position={[0, 0, 0]} material={chromeMat}>
+          <boxGeometry args={[0.32, 2.2, 0.32]} />
+        </mesh>
+        {/* Bottom serif */}
+        <mesh position={[0, -1.15, 0]} material={chromeMat}>
+          <boxGeometry args={[1.1, 0.18, 0.32]} />
+        </mesh>
+        {/* Soft inner glow disc behind the letter (a "lit panel" feel) */}
+        <mesh position={[0, 0, -0.25]} rotation={[0, 0, 0]}>
+          <circleGeometry args={[1.3, 48]} />
+          <meshBasicMaterial
+            color={mode === "dimension" ? "#B7A7FF" : "#8BA8FF"}
+            transparent
+            opacity={0.22}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      </group>
+
+      {/* Small chrome pearl behind the I — sense of inner core */}
+      <mesh ref={core} position={[0, 0, -0.6]} scale={0.34}>
+        <icosahedronGeometry args={[1.05, 24]} />
+        <MeshDistortMaterial
+          envMap={envMap}
+          envMapIntensity={1.4}
+          metalness={1}
+          roughness={0.18}
+          color="#dcdfea"
+          distort={0.32}
+          speed={1.4}
         />
       </mesh>
 

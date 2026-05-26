@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
 import ProjectCTA from "./ProjectCTA";
+import Slot from "./Slot";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -62,9 +63,10 @@ export default function VVBoutique() {
       <div className="mx-auto mt-12 grid max-w-[1500px] grid-cols-12 gap-6 md:mt-16">
         {/* Tall portrait slot */}
         <div className="col-span-12 md:col-span-5">
-          <div
-            className="vv-tall slot"
-            data-asset="vv-look-01"
+          <Slot
+            asset="vv-look-01"
+            label="View look"
+            className="vv-tall"
             style={{ aspectRatio: "3 / 4.4", borderRadius: 4 }}
           />
         </div>
@@ -89,21 +91,21 @@ export default function VVBoutique() {
           >
             V&V Boutique
           </SplitText>
-          <p className="mt-8 max-w-[44ch] text-[14px] leading-[1.7] text-bone-200/80">
+          <p className="mt-8 max-w-[48ch] text-[16px] leading-[1.65] text-bone-200/90">
             Editorial identity and digital flagship for a Ukrainian luxury fashion house.
             Slow horizontal lookbook movement, monochrome photography and oversized
             display type held the campaign together across web, print and look.
           </p>
 
-          <div className="mt-10 grid grid-cols-3 gap-6 text-[11px]">
+          <div className="mt-10 grid grid-cols-3 gap-6 text-[14px]">
             {[
               ["Year", "2025"],
               ["Role", "Brand · Web"],
               ["Scope", "Identity · Site · Lookbook"],
             ].map(([k, v]) => (
               <div key={k}>
-                <div className="eyebrow opacity-60">{k}</div>
-                <div className="mt-2 text-bone-50">{v}</div>
+                <div className="eyebrow opacity-75">{k}</div>
+                <div className="mt-2.5 text-bone-50 font-medium">{v}</div>
               </div>
             ))}
           </div>
@@ -112,17 +114,18 @@ export default function VVBoutique() {
 
         {/* Wide editorial slot */}
         <div className="col-span-12 mt-10 md:col-span-12">
-          <div
-            className="vv-wide slot"
-            data-asset="vv-spread-02"
+          <Slot
+            asset="vv-spread-02"
+            label="View spread"
+            className="vv-wide"
             style={{ aspectRatio: "16 / 7", borderRadius: 4 }}
           />
         </div>
 
         {/* Two square slots */}
         <div className="col-span-12 grid grid-cols-2 gap-6 mt-10 md:col-span-12 md:mt-12">
-          <div className="slot" data-asset="vv-detail-03" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
-          <div className="slot" data-asset="vv-detail-04" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
+          <Slot asset="vv-detail-03" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
+          <Slot asset="vv-detail-04" style={{ aspectRatio: "1 / 1", borderRadius: 4 }} />
         </div>
 
         {/* Unified bottom CTA */}

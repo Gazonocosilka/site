@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
+import HeroHint from "./HeroHint";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -39,30 +40,38 @@ export default function Hero() {
     if (reduce) return;
 
     const ctx = gsap.context(() => {
-      gsap.to(titleRef.current, {
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-        yPercent: -30,
-        scale: 1.15,
-        opacity: 0,
-        filter: "blur(14px)",
-        ease: "none",
-      });
-      gsap.to(sceneRef.current, {
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-        scale: 1.18,
-        opacity: 0.4,
-        ease: "none",
-      });
+      gsap.fromTo(
+        titleRef.current,
+        { yPercent: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
+        {
+          scrollTrigger: {
+            trigger: root.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+          yPercent: -30,
+          scale: 1.15,
+          opacity: 0,
+          filter: "blur(14px)",
+          ease: "none",
+        }
+      );
+      gsap.fromTo(
+        sceneRef.current,
+        { scale: 1, opacity: 1 },
+        {
+          scrollTrigger: {
+            trigger: root.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+          scale: 1.18,
+          opacity: 0.4,
+          ease: "none",
+        }
+      );
     }, root);
 
     return () => ctx.revert();
@@ -169,6 +178,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* First-visit hint nudging interaction with the 3D form */}
+      <HeroHint />
 
       {/* Scroll cue */}
       <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-center md:bottom-10">

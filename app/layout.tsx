@@ -5,6 +5,7 @@ import Cursor from "@/components/system/Cursor";
 import Grain from "@/components/system/Grain";
 import { DimensionProvider } from "@/components/system/DimensionContext";
 import DimensionToggle from "@/components/system/DimensionToggle";
+import ScrollProgress from "@/components/system/ScrollProgress";
 
 export const metadata: Metadata = {
   title: "Inna — Designer · UAL · London",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </SmoothScroll>
           <Grain />
           <Cursor />
+          <ScrollProgress />
           <DimensionToggle />
         </DimensionProvider>
       </body>

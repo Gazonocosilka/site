@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
 import ProjectCTA from "./ProjectCTA";
+import Slot from "./Slot";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -78,31 +79,41 @@ export default function Beextrart() {
           {capsules.map((c) => (
             <div
               key={c.label}
-              className="glass absolute z-20 hidden rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.28em] md:block"
+              className="glass absolute z-20 hidden items-center gap-2.5 rounded-full px-5 py-3 text-[13px] uppercase tracking-[0.26em] md:inline-flex"
               style={{
                 left: c.x,
                 top: c.y,
                 color: "var(--bone-50)",
-                boxShadow: "0 0 30px rgba(255,222,233,0.18)",
+                boxShadow: "0 0 36px rgba(255,222,233,0.28)",
                 animation: "floatLabel 6s var(--ease-cinema) infinite",
               }}
             >
+              <span
+                aria-hidden
+                className="block h-1.5 w-1.5 rounded-full"
+                style={{ background: "var(--glow-pink)", boxShadow: "0 0 10px var(--glow-pink)" }}
+              />
               {c.label}
             </div>
           ))}
 
           <div
-            className="bee-product slot relative"
-            data-asset="bee-render-01"
-            style={{
-              width: "min(560px, 80vw)",
-              aspectRatio: "3 / 4",
-              borderRadius: 8,
-              boxShadow: "0 0 120px rgba(255,222,233,0.15), inset 0 0 0 1px rgba(255,255,255,0.08)",
-            }}
+            className="relative"
+            style={{ width: "min(560px, 80vw)" }}
           >
-            {/* Glossy frame ring */}
+            <Slot
+              asset="bee-render-01"
+              label="View product"
+              className="bee-product relative"
+              style={{
+                aspectRatio: "3 / 4",
+                borderRadius: 8,
+                boxShadow: "0 0 120px rgba(255,222,233,0.15), inset 0 0 0 1px rgba(255,255,255,0.08)",
+              }}
+            />
+            {/* Glossy frame ring sits on top, but doesn't catch hover */}
             <div
+              aria-hidden
               className="pointer-events-none absolute -inset-3 rounded-[12px]"
               style={{
                 background:
@@ -118,7 +129,7 @@ export default function Beextrart() {
         {/* Description + meta */}
         <div className="col-span-12 mt-16 grid grid-cols-12 gap-6 md:mt-20">
           <div className="col-span-12 md:col-span-7">
-            <p className="max-w-[52ch] text-[14px] leading-[1.7] text-bone-200/85">
+            <p className="max-w-[52ch] text-[16px] leading-[1.65] text-bone-200/90">
               A futuristic beauty system for a bold lash brand —
               translating high-shine product surfaces into a glossy,
               campaign-driven digital experience.
@@ -126,15 +137,15 @@ export default function Beextrart() {
               soft pink accent thread the visual story together.
             </p>
           </div>
-          <div className="col-span-12 grid grid-cols-3 gap-6 text-[11px] md:col-span-5">
+          <div className="col-span-12 grid grid-cols-3 gap-6 text-[14px] md:col-span-5">
             {[
               ["Year", "2025"],
               ["Role", "Brand · Direction"],
               ["Sector", "Beauty"],
             ].map(([k, v]) => (
               <div key={k}>
-                <div className="eyebrow opacity-60">{k}</div>
-                <div className="mt-2 text-bone-50">{v}</div>
+                <div className="eyebrow opacity-75">{k}</div>
+                <div className="mt-2.5 text-bone-50 font-medium">{v}</div>
               </div>
             ))}
           </div>
@@ -142,8 +153,8 @@ export default function Beextrart() {
 
         {/* Two product capture slots */}
         <div className="col-span-12 mt-12 grid grid-cols-2 gap-6">
-          <div className="slot" data-asset="bee-shot-02" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
-          <div className="slot" data-asset="bee-shot-03" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
+          <Slot asset="bee-shot-02" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
+          <Slot asset="bee-shot-03" style={{ aspectRatio: "4 / 3", borderRadius: 4 }} />
         </div>
 
         {/* Unified bottom CTA */}

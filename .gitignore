@@ -9,3 +9,6 @@ next-env.d.ts.bak
 
 # Local IDE / harness config (machine-specific paths)
 .claude/
+
+# User-provided working documents
+feedback*.docx

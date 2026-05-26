@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
 import ProjectCTA from "./ProjectCTA";
+import Slot from "./Slot";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -81,7 +82,7 @@ export default function NexGen() {
               NexGen
             </SplitText>
           </div>
-          <p className="mt-8 max-w-[60ch] text-[14px] leading-[1.7] text-bone-200/85">
+          <p className="mt-8 max-w-[60ch] text-[16px] leading-[1.65] text-bone-200/90">
             A futurist design agency identity built like an operating system —
             modular grids, AI-flavoured iconography, sharp brutalist type
             and a dark interface vocabulary. The site reads like a console
@@ -97,17 +98,8 @@ export default function NexGen() {
         {/* 3x2 grid of UI capture slots */}
         <div className="col-span-12 mt-8 grid grid-cols-2 gap-4 md:mt-16 md:grid-cols-3 md:gap-5">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="nex-cell relative bevel"
-              style={{ borderRadius: 2 }}
-            >
-              <div
-                className="slot"
-                data-asset={`nex-ui-${String(i + 1).padStart(2, "0")}`}
-                style={{ aspectRatio: "16 / 11", borderRadius: 2 }}
-              />
-              {/* Registration marks */}
+            <div key={i} className="nex-cell relative">
+              {/* Outer registration marks (sit outside the slot) */}
               {[
                 { top: -6, left: -6 },
                 { top: -6, right: -6 },
@@ -116,7 +108,7 @@ export default function NexGen() {
               ].map((m, j) => (
                 <span
                   key={j}
-                  className="pointer-events-none absolute h-3 w-3 border-white/30"
+                  className="pointer-events-none absolute h-3 w-3 border-white/30 z-10"
                   style={{
                     ...m,
                     borderTopWidth: m.top !== undefined ? 1 : 0,
@@ -126,9 +118,17 @@ export default function NexGen() {
                   }}
                 />
               ))}
-              <div className="absolute left-2 top-2 z-10 flex items-center gap-1.5">
-                <span className="mono text-[8px] opacity-60">CH·{String(i + 1).padStart(2, "0")}</span>
-                <span className="block h-1 w-1 rounded-full" style={{ background: "var(--glow-blue)" }} />
+              <Slot
+                asset={`nex-ui-${String(i + 1).padStart(2, "0")}`}
+                label="Open frame"
+                style={{ aspectRatio: "16 / 11", borderRadius: 2 }}
+              />
+              <div className="pointer-events-none absolute left-2.5 top-2.5 z-[5] flex items-center gap-2">
+                <span className="mono text-[11px] opacity-85">CH·{String(i + 1).padStart(2, "0")}</span>
+                <span
+                  className="block h-1.5 w-1.5 rounded-full"
+                  style={{ background: "var(--glow-blue)", boxShadow: "0 0 8px var(--glow-blue)" }}
+                />
               </div>
             </div>
           ))}
@@ -252,15 +252,15 @@ export default function NexGen() {
         </div>
 
         <div className="col-span-12 mt-12">
-          <div className="grid grid-cols-3 gap-6 text-[11px]">
+          <div className="grid grid-cols-3 gap-6 text-[14px]">
             {[
               ["Year", "2026"],
               ["Role", "Identity · Direction"],
               ["Sector", "Tech"],
             ].map(([k, v]) => (
               <div key={k}>
-                <div className="eyebrow opacity-60">{k}</div>
-                <div className="mt-2 text-bone-50">{v}</div>
+                <div className="eyebrow opacity-75">{k}</div>
+                <div className="mt-2.5 text-bone-50 font-medium">{v}</div>
               </div>
             ))}
           </div>
