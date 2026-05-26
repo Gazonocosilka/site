@@ -41,12 +41,11 @@ export default function HeroScene() {
     <Canvas
       dpr={[1, 1.6]}
       camera={{ position: [0, 0.2, 4.4], fov: 38 }}
-      gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
+      gl={{ antialias: true, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
     >
-      {/* Fog still helps the chrome figure recede; bg is transparent so the
-          page's ambient-bg flows through and Hero blends into About. */}
       <fog attach="fog" args={[isDim ? "#0a0510" : "#050505", 4, 13]} />
+      <color attach="background" args={["#050505"]} />
       <Lights />
       <Suspense fallback={null}>
         <HeroFigure />
