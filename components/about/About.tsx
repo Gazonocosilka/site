@@ -83,10 +83,29 @@ export default function About() {
   return (
     <section
       ref={root}
-      className="relative min-h-[120vh] w-full overflow-hidden ambient-bg py-32 md:py-48"
+      className="relative min-h-[120vh] w-full overflow-hidden py-32 md:py-48"
     >
+      {/* Top fade — picks up from where the Hero faded out, gradually reveals About */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0 top-0 z-0 h-[30vh]"
+        style={{
+          background:
+            "linear-gradient(180deg, #050505 0%, rgba(5,5,5,0.4) 60%, transparent 100%)",
+        }}
+      />
+      {/* Bottom fade — About dissolves into Projects rail atmosphere */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-[35vh]"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(6,7,10,0.55) 55%, rgba(6,7,10,1) 100%)",
+        }}
+      />
+
       {/* Section eyebrows */}
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 md:px-12">
+      <div className="relative z-[3] mx-auto flex max-w-[1400px] items-center justify-between px-6 md:px-12">
         <span className="mono opacity-60">Ch.02 — Field Notes</span>
         <span className="mono opacity-60">About</span>
       </div>

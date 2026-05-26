@@ -74,6 +74,15 @@ export default function Contact() {
           "radial-gradient(ellipse 90% 60% at 50% 100%, rgba(139,168,255,0.18), transparent 70%), linear-gradient(180deg, #050505 0%, #08080c 60%, #0c0a14 100%)",
       }}
     >
+      {/* Top fade — receives the soft handoff from the projects rail bridge */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0 top-0 z-[1] h-[25vh]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,7,10,0.85) 0%, rgba(5,5,5,0.35) 60%, transparent 100%)",
+        }}
+      />
       {/* Digital rain canvas */}
       <canvas
         ref={rainRef}
@@ -113,12 +122,12 @@ export default function Contact() {
           as="h2"
           stagger={0.022}
           delay={0.12}
-          className="display italic"
+          className="display-italic"
           style={{
             fontSize: "clamp(2.6rem, 9vw, 9rem)",
             lineHeight: 0.92,
             letterSpacing: "-0.05em",
-            fontWeight: 200,
+            fontWeight: 400,
             color: "var(--bone-50)",
           }}
         >

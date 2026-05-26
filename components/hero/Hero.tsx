@@ -80,11 +80,21 @@ export default function Hero() {
   return (
     <section
       ref={root}
-      className="relative h-[100svh] w-full overflow-hidden ambient-bg"
+      className="relative h-[100svh] w-full overflow-hidden"
     >
       <div ref={sceneRef} className="absolute inset-0 will-change-transform">
         <HeroScene />
       </div>
+
+      {/* Bottom fade — hero dissolves into the next section's atmosphere */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-[6] h-[35vh]"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(5,5,5,0.6) 60%, #050505 100%)",
+        }}
+      />
 
       {/* Side eyebrows */}
       <div className="pointer-events-none absolute bottom-12 left-6 z-10 hidden text-[10px] uppercase tracking-[0.32em] text-bone-400 md:block md:left-12">
@@ -124,9 +134,9 @@ export default function Hero() {
           className="display select-none"
           style={{
             fontSize: "clamp(5rem, 14vw, 14rem)",
-            fontWeight: 200,
-            lineHeight: 0.88,
-            letterSpacing: "-0.06em",
+            fontWeight: 500,
+            lineHeight: 0.92,
+            letterSpacing: "-0.04em",
             color: "var(--bone-50)",
             textShadow:
               "0 2px 24px rgba(5,5,5,0.55), 0 0 40px rgba(5,5,5,0.45)",

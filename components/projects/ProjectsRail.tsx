@@ -7,6 +7,7 @@ import VVBoutique from "./VVBoutique";
 import Beextrart from "./Beextrart";
 import NexGen from "./NexGen";
 import RailBackground from "./RailBackground";
+import RailBridge from "./RailBridge";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -130,6 +131,16 @@ export default function ProjectsRail() {
     <section ref={root} className="relative w-full" aria-label="Selected work">
       <RailBackground ref={bgRef} />
 
+      {/* Top fade — picks up from About's dark bottom and eases into rail bg */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0 top-0 z-[1] h-[30vh]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,7,10,1) 0%, rgba(6,7,10,0.5) 60%, transparent 100%)",
+        }}
+      />
+
       {/* Intro panel */}
       <div className="relative z-[2] mx-auto flex max-w-[1500px] flex-col items-start justify-between gap-10 px-6 pb-10 pt-32 md:px-12 md:pb-20 md:pt-44 md:flex-row md:items-end">
         <div>
@@ -193,6 +204,9 @@ export default function ProjectsRail() {
       <div id="project-nex" className="rail-section relative z-[2]">
         <NexGen />
       </div>
+
+      {/* Bridge — projects flow into Contact as one continuous chapter, not a hard cut */}
+      <RailBridge />
     </section>
   );
 }

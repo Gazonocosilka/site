@@ -1,5 +1,6 @@
-/* Fontshare — Satoshi (UI) + Gambarino (display). Free for personal & commercial use. */
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@200,300,400,500,700,900&f[]=gambarino@400&display=swap");
+/* Fontshare — Satoshi (UI) + Tasa Orbiter Display (futuristic geometric sans).
+   Gambarino kept around for the rare italic moment in Contact. */
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@200,300,400,500,700,900&f[]=tasa-orbiter-display@400,500,700&f[]=gambarino@400&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -28,7 +29,8 @@
   --ca-mult: 1;
 
   --font-sans: "Satoshi", system-ui, -apple-system, "Helvetica Neue", sans-serif;
-  --font-display: "Gambarino", "Editorial New", "Canela", "Times New Roman", serif;
+  --font-display: "Tasa Orbiter Display", "Satoshi", system-ui, sans-serif;
+  --font-italic: "Gambarino", "Editorial New", serif;
 
   --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -103,11 +105,21 @@ html.lenis body {
     linear-gradient(180deg, #0a0510 0%, #0f0a14 50%, #050308 100%);
 }
 
-/* Display utility */
+/* Display utility — futuristic sans, tight tracking */
 .display {
   font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display italic — reserved for the one editorial italic moment in Contact */
+.display-italic {
+  font-family: var(--font-italic);
   font-weight: 400;
-  letter-spacing: -0.04em;
+  font-style: italic;
+  letter-spacing: -0.03em;
   line-height: 0.92;
 }
 
