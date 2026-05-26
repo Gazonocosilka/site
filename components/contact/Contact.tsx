@@ -65,6 +65,7 @@ export default function Contact() {
 
   return (
     <section
+      id="contact"
       ref={root}
       className="relative w-full overflow-hidden"
       style={{

@@ -201,6 +201,9 @@ export default function HeroFigure() {
         />
       </mesh>
 
+      {/* Luminous particle blob — lives INSIDE the chrome sphere, flows with cursor */}
+      <InnerBlob count={220} radius={0.85} />
+
       {/* Orbiting chrome facets */}
       <OrbitingShard radius={2.0} speed={0.32} offset={0} size={0.22} type="oct" envMap={envMap} />
       <OrbitingShard radius={2.35} speed={0.22} offset={Math.PI * 0.75} size={0.16} type="tet" envMap={envMap} />
@@ -211,6 +214,97 @@ export default function HeroFigure() {
       <FloatingRing radius={1.7} thickness={0.005} color="#8BA8FF" opacity={0.55} speed={0.3} />
       <FloatingRing radius={2.3} thickness={0.003} color="#B7A7FF" opacity={0.35} speed={-0.2} tilt={0.6} />
     </group>
+  );
+}
+
+/**
+ * Inner luminous blob — confined inside the chrome sphere.
+ * Lives in HeroFigure's group so it scales with the figure.
+ */
+function InnerBlob({ count = 220, radius = 0.85 }: { count?: number; radius?: number }) {
+  const ref = useRef<THREE.Points>(null);
+  const { mouse } = useThree();
+
+  const home = useMemo(() => {
+    const arr = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      // Uniform sample inside a unit sphere
+      let x = 0, y = 0, z = 0, len = 0;
+      do {
+        x = Math.random() * 2 - 1;
+        y = Math.random() * 2 - 1;
+        z = Math.random() * 2 - 1;
+        len = x * x + y * y + z * z;
+      } while (len > 1 || len === 0);
+      const r = Math.cbrt(Math.random()) * radius;
+      const s = Math.sqrt(len);
+      arr[i * 3] = (x / s) * r;
+      arr[i * 3 + 1] = (y / s) * r;
+      arr[i * 3 + 2] = (z / s) * r;
+    }
+    return arr;
+  }, [count, radius]);
+
+  const speeds = useMemo(() => {
+    const arr = new Float32Array(count);
+    for (let i = 0; i < count; i++) arr[i] = 0.4 + Math.random() * 0.8;
+    return arr;
+  }, [count]);
+
+  const sizes = useMemo(() => {
+    const arr = new Float32Array(count);
+    for (let i = 0; i < count; i++) arr[i] = 0.02 + Math.random() * 0.04;
+    return arr;
+  }, [count]);
+
+  const positions = useMemo(() => new Float32Array(home), [home]);
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = state.clock.elapsedTime;
+    const mx = mouse.x;
+    const my = mouse.y;
+    const arr = (ref.current.geometry.attributes.position as THREE.BufferAttribute).array as Float32Array;
+
+    for (let i = 0; i < count; i++) {
+      const hx = home[i * 3];
+      const hy = home[i * 3 + 1];
+      const hz = home[i * 3 + 2];
+      const sp = speeds[i];
+      const phase = i * 0.31;
+      // Curl-like swirl for fluid blob motion
+      const dx = Math.sin(t * sp * 0.7 + hy * 4 + phase) * 0.18;
+      const dy = Math.sin(t * sp * 0.6 + hz * 4 + phase) * 0.18;
+      const dz = Math.cos(t * sp * 0.8 + hx * 4 + phase) * 0.18;
+      // Gentle cursor pull, projected into figure space
+      const pullX = (mx * 0.4 - hx) * 0.08;
+      const pullY = (my * 0.4 - hy) * 0.08;
+      arr[i * 3] = hx + dx + pullX;
+      arr[i * 3 + 1] = hy + dy + pullY;
+      arr[i * 3 + 2] = hz + dz;
+    }
+    ref.current.geometry.attributes.position.needsUpdate = true;
+
+    // Slow self-rotation keeps it alive with no cursor input
+    ref.current.rotation.y = t * 0.12;
+  });
+
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.035}
+        sizeAttenuation
+        transparent
+        opacity={0.9}
+        color="#D6D6FF"
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
   );
 }
 

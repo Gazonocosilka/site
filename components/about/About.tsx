@@ -11,7 +11,7 @@ if (typeof window !== "undefined") {
 
 const LINES = [
   "I'm a designer based in London,",
-  "studying at the University of the Arts.",
+  "studying at University of the Arts London.",
   "I build digital experiences",
   "that feel cinematic, emotional",
   "and visually unforgettable.",
@@ -84,8 +84,6 @@ export default function About() {
     <section
       ref={root}
       className="relative min-h-[120vh] w-full overflow-hidden ambient-bg py-32 md:py-48"
-      data-cursor="drag"
-      data-cursor-label="archive"
     >
       {/* Section eyebrows */}
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 md:px-12">

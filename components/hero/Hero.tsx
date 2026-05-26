@@ -86,12 +86,6 @@ export default function Hero() {
         <HeroScene />
       </div>
 
-      {/* Top bar */}
-      <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-center justify-between px-6 pt-6 md:px-12 md:pt-10">
-        <div className="mono opacity-70">Inna · Portfolio · 2026</div>
-        <div className="mono hidden opacity-70 md:block">London / UAL</div>
-      </div>
-
       {/* Side eyebrows */}
       <div className="pointer-events-none absolute bottom-12 left-6 z-10 hidden text-[10px] uppercase tracking-[0.32em] text-bone-400 md:block md:left-12">
         Ch.01 — Entrance

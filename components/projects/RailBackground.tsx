@@ -51,12 +51,12 @@ const RailBackground = forwardRef<HTMLDivElement>(function RailBackground(_, ref
 
       {/* === Mood layer 0 — V&V Boutique === */}
       <div className="bg-layer absolute inset-0 overflow-hidden" data-layer="vv">
-        {/* Editorial spotlight palette */}
+        {/* Editorial spotlight palette — kept very subtle so the transition reads as a gradient */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 60% 80% at 30% 30%, rgba(245,245,243,0.07), transparent 70%), radial-gradient(ellipse 55% 70% at 75% 80%, rgba(201,199,194,0.05), transparent 70%)",
+              "radial-gradient(ellipse 80% 90% at 30% 30%, rgba(245,245,243,0.045), transparent 75%), radial-gradient(ellipse 70% 80% at 75% 80%, rgba(201,199,194,0.035), transparent 75%)",
           }}
         />
         {/* Drifting oversized display serif "ghost letters" */}
@@ -85,12 +85,12 @@ const RailBackground = forwardRef<HTMLDivElement>(function RailBackground(_, ref
 
       {/* === Mood layer 1 — BEEXTRART === */}
       <div className="bg-layer absolute inset-0 overflow-hidden" data-layer="bee">
-        {/* Chrome + pink + violet wash */}
+        {/* Chrome + pink + violet wash — softer so it blends through transitions */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 70% 50% at 50% 35%, rgba(255,222,233,0.10), transparent 70%), radial-gradient(ellipse 70% 60% at 80% 75%, rgba(183,167,255,0.13), transparent 70%), radial-gradient(ellipse 55% 55% at 18% 80%, rgba(214,214,255,0.08), transparent 70%)",
+              "radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255,222,233,0.075), transparent 75%), radial-gradient(ellipse 90% 80% at 80% 75%, rgba(183,167,255,0.09), transparent 75%), radial-gradient(ellipse 70% 70% at 18% 80%, rgba(214,214,255,0.06), transparent 75%)",
           }}
         />
         {/* Soft chrome smear that drifts (CSS-only — feels like liquid metal flowing) */}
@@ -133,12 +133,12 @@ const RailBackground = forwardRef<HTMLDivElement>(function RailBackground(_, ref
 
       {/* === Mood layer 2 — NexGen === */}
       <div className="bg-layer absolute inset-0 overflow-hidden" data-layer="nex">
-        {/* Electric blue wash */}
+        {/* Electric blue wash — softer so the transition feels gradient-like */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 70% 60% at 50% 30%, rgba(139,168,255,0.14), transparent 70%), radial-gradient(ellipse 50% 80% at 100% 100%, rgba(139,168,255,0.08), transparent 70%)",
+              "radial-gradient(ellipse 90% 80% at 50% 30%, rgba(139,168,255,0.10), transparent 75%), radial-gradient(ellipse 70% 90% at 100% 100%, rgba(139,168,255,0.06), transparent 75%)",
           }}
         />
         {/* Tighter overlay grid (combines with the always-on grid for a denser tech feel) */}
@@ -146,7 +146,7 @@ const RailBackground = forwardRef<HTMLDivElement>(function RailBackground(_, ref
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(139,168,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(139,168,255,0.06) 1px, transparent 1px)",
+              "linear-gradient(rgba(139,168,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(139,168,255,0.045) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
             maskImage:
               "radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 80%)",

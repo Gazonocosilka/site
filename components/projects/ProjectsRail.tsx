@@ -25,11 +25,12 @@ declare global {
 /**
  * Bell-curve opacity around peak position. Width controls how broad the lobe is —
  * larger width = longer crossfade overlap with neighbouring projects.
+ * Lower x^2 factor = softer falloff = more continuous gradient feel.
  */
-function bell(progress: number, peak: number, width = 0.35): number {
+function bell(progress: number, peak: number, width = 0.45): number {
   const x = (progress - peak) / width;
-  // Smooth gaussian-ish curve clamped to [0,1]
-  return Math.max(0, Math.min(1, Math.exp(-x * x * 3.5)));
+  // Wider, gentler gaussian — produces overlapping plateaus instead of distinct lobes
+  return Math.max(0, Math.min(1, Math.exp(-x * x * 1.8)));
 }
 
 export default function ProjectsRail() {
@@ -82,15 +83,12 @@ export default function ProjectsRail() {
       }
 
       // === Master scrubbed crossfade across the entire rail ===
-      // st.progress = 0..1 over the full ProjectsRail container.
-      // Compute bell-curve opacity for each layer at three peak positions.
-      // Whole-rail container is intro panel (small) + 3 project sections, so
-      // the peaks are placed at roughly the centre of each project.
+      // Wide bell-curve peaks with heavy overlap → reads as a continuous
+      // gradient morphing through the rail, not three distinct stages.
       const compute = (p: number) => {
-        // Place peaks deeper into the rail to account for the intro panel (~10%)
-        const peaks = [0.22, 0.55, 0.85];
-        const raw = peaks.map((peak) => bell(p, peak, 0.22));
-        // Re-normalize so total opacity stays close to 1 (prevents brightness dips)
+        const peaks = [0.25, 0.55, 0.82];
+        // Width 0.45 is broad — every layer always has SOME opacity in the rail
+        const raw = peaks.map((peak) => bell(p, peak, 0.45));
         const total = raw.reduce((a, b) => a + b, 0) || 1;
         return raw.map((v) => v / total);
       };
@@ -99,11 +97,13 @@ export default function ProjectsRail() {
         trigger: root.current,
         start: "top bottom",
         end: "bottom top",
-        scrub: 1.2,
+        // Higher scrub = more lerp smoothing on bg opacity changes — colors
+        // glide between projects instead of snapping with the scroll.
+        scrub: 2.4,
         onUpdate: (st) => {
-          // Bg overall fade-in/out near edges so it doesn't bleed past the rail
-          const enter = gsap.utils.clamp(0, 1, st.progress * 4);
-          const exit = gsap.utils.clamp(0, 1, (1 - st.progress) * 4);
+          // Long lazy enter/exit so the bg doesn't pop on/off at edges
+          const enter = gsap.utils.clamp(0, 1, st.progress * 2.5);
+          const exit = gsap.utils.clamp(0, 1, (1 - st.progress) * 2.5);
           const bgOpacity = Math.min(enter, exit);
           gsap.set(bg, { opacity: bgOpacity });
 
