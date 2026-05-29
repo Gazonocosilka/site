@@ -164,10 +164,17 @@ html.lenis body {
 }
 
 .char-mask {
+  /* overflow: clip + clip-margin lets the masked text animate vertically
+     but still show character descenders (g, y, f tails) that sit below
+     the baseline. Fallback to overflow:hidden + padding for older browsers. */
   overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: 0.25em;
   display: inline-block;
   vertical-align: bottom;
   line-height: 1;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
 }
 
 /* Reduced motion */
