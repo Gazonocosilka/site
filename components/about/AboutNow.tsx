@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 const ACTIVITIES = [
   "sketching",
-  "in Figma",
   "moodboarding",
   "writing copy",
   "BEEXTRART · direction",

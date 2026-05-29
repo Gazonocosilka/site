@@ -1,14 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import SplitText from "../system/SplitText";
 import AboutNow from "./AboutNow";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import AboutArtifacts from "./AboutArtifacts";
+import AboutStack from "./AboutStack";
 
 const LINES = [
   "I'm a designer based in London,",
@@ -20,28 +16,6 @@ const LINES = [
 
 export default function About() {
   const root = useRef<HTMLDivElement>(null);
-  const wordRef = useRef<HTMLDivElement>(null);
-
-  // Background word drifts very slightly with scroll for parallax
-  useEffect(() => {
-    if (!root.current || !wordRef.current) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const ctx = gsap.context(() => {
-      gsap.to(wordRef.current, {
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-        yPercent: -10,
-        xPercent: 4,
-        ease: "none",
-      });
-    }, root);
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section
@@ -66,26 +40,6 @@ export default function About() {
             "linear-gradient(180deg, transparent 0%, rgba(6,7,10,0.55) 55%, rgba(6,7,10,1) 100%)",
         }}
       />
-
-      {/* Giant faded backdrop word — editorial texture, never competes with text */}
-      <div
-        ref={wordRef}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
-      >
-        <span
-          className="display select-none whitespace-nowrap"
-          style={{
-            fontSize: "clamp(8rem, 24vw, 22rem)",
-            fontWeight: 500,
-            letterSpacing: "-0.05em",
-            lineHeight: 0.85,
-            color: "rgba(245, 245, 243, 0.028)",
-          }}
-        >
-          FIELD NOTES
-        </span>
-      </div>
 
       {/* Section eyebrows */}
       <div className="relative z-[3] mx-auto flex max-w-[1400px] items-center justify-between px-6 md:px-12">
@@ -119,7 +73,10 @@ export default function About() {
           ))}
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-24 md:grid-cols-2 md:gap-20">
+        {/* Editorial archive row — sits in the body column, no overlap */}
+        <AboutArtifacts />
+
+        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-2 md:gap-20">
           <div>
             <div className="eyebrow mb-4">Practice</div>
             <p className="max-w-[42ch] text-[15px] leading-[1.7] text-bone-200/80">
@@ -138,6 +95,9 @@ export default function About() {
             </p>
           </div>
         </div>
+
+        {/* Tools / stack */}
+        <AboutStack />
 
         {/* Live status strip — what I'm actually doing right now */}
         <AboutNow />
