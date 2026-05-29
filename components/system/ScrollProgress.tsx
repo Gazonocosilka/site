@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const CHAPTERS = [
   { id: "hero", label: "Entrance", short: "01" },
@@ -16,11 +17,14 @@ const CHAPTERS = [
  * - Updates a thin vertical bar in real time based on document progress.
  */
 export default function ScrollProgress() {
+  const pathname = usePathname();
   const [progress, setProgress] = useState(0);
   const [activeIdx, setActiveIdx] = useState(0);
   const stops = useRef<Array<{ id: string; top: number }>>([]);
+  const onHome = pathname === "/";
 
   useEffect(() => {
+    if (!onHome) return;
     const refresh = () => {
       const map: Array<{ id: string; top: number }> = [];
       // hero is the first <section>
@@ -71,7 +75,9 @@ export default function ScrollProgress() {
       window.removeEventListener("resize", onResize);
       window.clearInterval(interval);
     };
-  }, []);
+  }, [onHome]);
+
+  if (!onHome) return null;
 
   const goTo = (idx: number) => {
     const stop = stops.current[idx];

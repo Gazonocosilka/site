@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 /**
  * Sticky top bar with brand mark on the left, location middle (optional),
@@ -21,15 +22,19 @@ export default function TopBar() {
 
   const goToContact = () => {
     const target = document.getElementById("contact");
-    if (!target) return;
-    const lenis = (window as unknown as {
-      __lenis?: { scrollTo: (t: HTMLElement | number, opts?: object) => void };
-    }).__lenis;
-    if (lenis) {
-      lenis.scrollTo(target, { duration: 1.6, offset: 0 });
-    } else {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (target) {
+      const lenis = (window as unknown as {
+        __lenis?: { scrollTo: (t: HTMLElement | number, opts?: object) => void };
+      }).__lenis;
+      if (lenis) {
+        lenis.scrollTo(target, { duration: 1.6, offset: 0 });
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      return;
     }
+    // No #contact on the current page (e.g. case study) — route to home anchor
+    window.location.assign("/#contact");
   };
 
   return (
@@ -43,7 +48,14 @@ export default function TopBar() {
         WebkitBackdropFilter: scrolled ? "blur(8px)" : "none",
       }}
     >
-      <span className="mono opacity-80">Inna · Portfolio · 2026</span>
+      <Link
+        href="/"
+        data-cursor="hover"
+        data-cursor-label="home"
+        className="mono opacity-80 transition-opacity duration-500 hover:opacity-100"
+      >
+        Inna · Portfolio · 2026
+      </Link>
 
       <span className="mono hidden opacity-60 md:inline">London / UAL</span>
 

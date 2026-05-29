@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../system/SplitText";
@@ -31,6 +31,7 @@ export interface ProjectCaseProps {
   asset: string;           // slot data-asset key
   href?: string;           // case study URL
   accent?: Accent;
+  preview?: ReactNode;     // optional rich preview content rendered inside the slot
 }
 
 /**
@@ -53,6 +54,7 @@ export default function ProjectCase({
   asset,
   href = "#",
   accent = "neutral",
+  preview,
 }: ProjectCaseProps) {
   const root = useRef<HTMLDivElement>(null);
   const accentColor = ACCENT_COLOR[accent];
@@ -137,7 +139,9 @@ export default function ProjectCase({
               href={href}
               label="View case"
               style={{ aspectRatio: "16 / 9", borderRadius: 6 }}
-            />
+            >
+              {preview}
+            </Slot>
           </div>
         </div>
 
