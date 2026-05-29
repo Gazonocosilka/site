@@ -1,111 +1,68 @@
 "use client";
 
 /**
- * Typographic preview that fills the V&V card's 16:9 slot until a real
- * screenshot is dropped in. Built to read as the V&V brand: monochrome,
- * editorial, Ukrainian-rooted, London-based.
+ * V&V home-card preview. Uses the real V&V Boutique homepage screenshot
+ * with a soft scrim and a brand tag overlay so it reads as an editorial
+ * preview card, not just a flat thumbnail.
  */
 export default function VVPreview() {
   return (
-    <div
-      className="absolute inset-0 z-[2] flex flex-col justify-between overflow-hidden p-6 md:p-10"
-      style={{
-        background:
-          "radial-gradient(ellipse 70% 60% at 30% 30%, rgba(245,245,243,0.10), transparent 70%), linear-gradient(135deg, #0c0c10 0%, #06070a 60%, #0a0a0d 100%)",
-      }}
-    >
-      {/* Top row: brand tag + lookbook season */}
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="mono opacity-60" style={{ fontSize: 10 }}>
-            Vyrobleno · Ukrainian Boutique
-          </div>
-          <div className="mono mt-1.5 opacity-50" style={{ fontSize: 10 }}>
-            London · Est. 2024
-          </div>
-        </div>
-        <div className="text-right">
-          <div className="mono opacity-60" style={{ fontSize: 10 }}>
-            Lookbook 02
-          </div>
-          <div className="mono mt-1.5 opacity-50" style={{ fontSize: 10 }}>
-            Spring · 26
-          </div>
-        </div>
-      </div>
+    <div className="absolute inset-0 z-[2] overflow-hidden">
+      {/* The screenshot itself */}
+      <img
+        src="/vv-shots/vv-home.jpg"
+        alt="V&V Boutique — homepage"
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ filter: "saturate(0.95) brightness(0.96)" }}
+      />
 
-      {/* Centerpiece wordmark */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center">
-          <div
-            className="display select-none"
-            style={{
-              fontSize: "clamp(4.5rem, 16cqi, 12rem)",
-              fontWeight: 500,
-              letterSpacing: "-0.06em",
-              lineHeight: 0.85,
-              color: "var(--bone-50)",
-              opacity: 0.95,
-            }}
-          >
-            V<span style={{ opacity: 0.5 }}>&</span>V
-          </div>
-          <div
-            className="mt-4 text-bone-200/70"
-            style={{
-              fontSize: "clamp(10px, 1.4cqi, 14px)",
-              letterSpacing: "0.34em",
-              textTransform: "uppercase",
-            }}
-          >
-            елегантність у кожній деталі
-          </div>
-          <div
-            className="mt-2 text-bone-400"
-            style={{
-              fontSize: "clamp(9px, 1cqi, 11px)",
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-            }}
-          >
-            Elegance in every detail
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom row: thin gallery hint */}
-      <div className="flex items-end justify-between">
-        <div className="flex gap-2 opacity-30">
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="border border-white/15"
-              style={{
-                width: 26,
-                height: 36,
-                background: "rgba(245,245,243,0.02)",
-              }}
-            />
-          ))}
-        </div>
-        <div className="text-right">
-          <div className="mono opacity-50" style={{ fontSize: 10 }}>
-            Editorial · Web · Identity
-          </div>
-        </div>
-      </div>
-
-      {/* Top-bottom hairlines for editorial feel */}
+      {/* Soft top scrim for the brand tag */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-6 right-6 top-[58px] h-px md:left-10 md:right-10"
-        style={{ background: "rgba(245,245,243,0.12)" }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-1/3"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(5,5,5,0.55) 0%, transparent 100%)",
+        }}
       />
+      {/* Soft bottom scrim for the meta */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-6 right-6 bottom-[58px] h-px md:left-10 md:right-10"
-        style={{ background: "rgba(245,245,243,0.10)" }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(5,5,5,0.55) 100%)",
+        }}
       />
+
+      {/* Brand tag — top left */}
+      <div className="absolute left-5 top-5 flex items-center gap-2 md:left-7 md:top-6">
+        <span
+          aria-hidden
+          className="block h-1.5 w-1.5 rounded-full bg-bone-50"
+          style={{ boxShadow: "0 0 8px rgba(245,245,243,0.5)" }}
+        />
+        <span className="mono text-bone-50/95" style={{ fontSize: 11 }}>
+          V&amp;V Boutique · London
+        </span>
+      </div>
+
+      {/* Meta — bottom row */}
+      <div className="absolute inset-x-5 bottom-4 flex items-end justify-between md:inset-x-7 md:bottom-5">
+        <span
+          className="text-bone-50"
+          style={{
+            fontFamily: "var(--font-italic)",
+            fontSize: "clamp(14px, 1.6cqi, 22px)",
+            lineHeight: 1,
+          }}
+        >
+          елегантність у кожній деталі
+        </span>
+        <span className="mono text-bone-200/85" style={{ fontSize: 10 }}>
+          Identity · Web · UX
+        </span>
+      </div>
     </div>
   );
 }

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import Slot from "../projects/Slot";
-import VVPreview from "../projects/previews/VVPreview";
 import VVStoryboard from "./vv/VVStoryboard";
-import { VVWireframe, VVTypeSystem, VVPalette, VVLookbook } from "./vv/VVMocks";
+import { VVTypeSystem, VVPalette } from "./vv/VVMocks";
 
 // --- Content (generated from the storyboard + brand notes) ---
 
@@ -145,15 +144,19 @@ export default function VVCaseStudy() {
           </div>
         </header>
 
-        {/* === Cover image slot === */}
+        {/* === Cover image — real V&V homepage screenshot === */}
         <section className="mx-auto mt-16 max-w-[1400px] px-6 md:mt-24 md:px-12">
           <Slot
-            asset="vv-case-cover"
+            asset="vv-home"
             href="#brief"
             label="Scroll"
             style={{ aspectRatio: "16 / 9", borderRadius: 6 }}
           >
-            <VVPreview />
+            <img
+              src="/vv-shots/vv-home.jpg"
+              alt="V&V Boutique homepage hero"
+              className="absolute inset-0 z-[2] h-full w-full object-cover"
+            />
           </Slot>
         </section>
 
@@ -252,44 +255,67 @@ export default function VVCaseStudy() {
           </div>
         </section>
 
-        {/* === Process visuals — SVG/CSS mocks (will be swapped for photography later) === */}
+        {/* === Process visuals — real V&V screenshots arranged editorial === */}
         <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-32 md:px-12">
-          <div className="col-span-12 md:col-span-6">
+          <div className="col-span-12 md:col-span-7">
             <Slot
-              asset="vv-process-wireframe"
-              label="Open wireframe"
-              style={{ aspectRatio: "4 / 5", borderRadius: 4 }}
+              asset="vv-shop"
+              label="Open shop"
+              style={{ aspectRatio: "16 / 10", borderRadius: 4 }}
             >
-              <VVWireframe />
+              <img
+                src="/vv-shots/vv-shop.jpg"
+                alt="V&V Boutique — Колекція (shop grid)"
+                className="absolute inset-0 z-[2] h-full w-full object-cover"
+              />
             </Slot>
           </div>
-          <div className="col-span-12 grid grid-rows-2 gap-6 md:col-span-6">
+          <div className="col-span-12 grid grid-rows-2 gap-6 md:col-span-5">
             <Slot
-              asset="vv-process-lookbook"
-              label="Lookbook spread"
+              asset="vv-lookbook"
+              label="Lookbook"
               style={{ aspectRatio: "4 / 3", borderRadius: 4 }}
             >
-              <VVLookbook />
+              <img
+                src="/vv-shots/vv-lookbook.jpg"
+                alt="V&V Boutique — The Spring Editorial lookbook"
+                className="absolute inset-0 z-[2] h-full w-full object-cover"
+              />
             </Slot>
             <Slot
-              asset="vv-process-type"
+              asset="vv-about"
+              label="Brand story"
+              style={{ aspectRatio: "4 / 3", borderRadius: 4 }}
+            >
+              <img
+                src="/vv-shots/vv-about.jpg"
+                alt="V&V Boutique — Історія Бренду (brand story page)"
+                className="absolute inset-0 z-[2] h-full w-full object-cover"
+              />
+            </Slot>
+          </div>
+        </section>
+
+        {/* === Type system + Palette — design system artefacts === */}
+        <section className="mx-auto mt-10 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-12 md:px-12">
+          <div className="col-span-12 md:col-span-7">
+            <Slot
+              asset="vv-design-palette"
+              label="Palette"
+              style={{ aspectRatio: "16 / 7", borderRadius: 4 }}
+            >
+              <VVPalette />
+            </Slot>
+          </div>
+          <div className="col-span-12 md:col-span-5">
+            <Slot
+              asset="vv-design-type"
               label="Type system"
               style={{ aspectRatio: "4 / 3", borderRadius: 4 }}
             >
               <VVTypeSystem />
             </Slot>
           </div>
-        </section>
-
-        {/* === Palette strip === */}
-        <section className="mx-auto mt-10 max-w-[1400px] px-6 md:mt-12 md:px-12">
-          <Slot
-            asset="vv-process-palette"
-            label="Palette"
-            style={{ aspectRatio: "16 / 5", borderRadius: 4 }}
-          >
-            <VVPalette />
-          </Slot>
         </section>
 
         {/* === Key UX insights === */}
@@ -349,13 +375,46 @@ export default function VVCaseStudy() {
           </div>
         </section>
 
-        {/* === Wide screenshot slot (kept for a future real screenshot) === */}
+        {/* === Page gallery — every screen in the V&V site === */}
         <section className="mx-auto mt-24 max-w-[1400px] px-6 md:mt-32 md:px-12">
-          <Slot
-            asset="vv-screen-wide"
-            label="Site screenshot"
-            style={{ aspectRatio: "16 / 7", borderRadius: 6 }}
-          />
+          <div className="mb-8 flex items-baseline justify-between">
+            <span className="mono opacity-60">Pages · 06 of 10</span>
+            <span className="mono opacity-50" style={{ fontSize: 11 }}>
+              Site at 1440 × 900
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
+            {[
+              { asset: "vv-page-home", file: "vv-home.jpg", label: "Home" },
+              { asset: "vv-page-shop", file: "vv-shop.jpg", label: "Shop" },
+              { asset: "vv-page-lookbook", file: "vv-lookbook.jpg", label: "Lookbook" },
+              { asset: "vv-page-about", file: "vv-about.jpg", label: "About" },
+              { asset: "vv-page-size", file: "vv-size-guide.jpg", label: "Size guide" },
+              { asset: "vv-page-checkout", file: "vv-checkout.jpg", label: "Checkout" },
+            ].map((p) => (
+              <div key={p.asset} className="relative">
+                <Slot
+                  asset={p.asset}
+                  label={p.label}
+                  style={{ aspectRatio: "16 / 10", borderRadius: 4 }}
+                >
+                  <img
+                    src={`/vv-shots/${p.file}`}
+                    alt={`V&V Boutique — ${p.label}`}
+                    className="absolute inset-0 z-[2] h-full w-full object-cover"
+                  />
+                </Slot>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="mono opacity-70" style={{ fontSize: 11 }}>
+                    {p.label}
+                  </span>
+                  <span className="mono opacity-40" style={{ fontSize: 10 }}>
+                    /{p.file.replace("vv-", "").replace(".jpg", "")}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* === Outcome === */}

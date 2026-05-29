@@ -12,3 +12,6 @@ next-env.d.ts.bak
 
 # User-provided working documents
 feedback*.docx
+
+# Raw V&V site (250MB local copy used to take screenshots — not the portfolio itself)
+public/vv-site/
