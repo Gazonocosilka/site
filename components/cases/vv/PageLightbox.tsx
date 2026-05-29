@@ -122,21 +122,25 @@ export default function PageLightbox({ pages, openId, onClose, onJump }: Props) 
         </button>
       </div>
 
-      {/* Scrollable image region */}
+      {/* Scrollable image region.
+          data-lenis-prevent tells Lenis to NOT intercept wheel events that
+          originate inside this element, so native scrolling works here. */}
       <div
         ref={scrollRef}
-        className="relative flex-1 overflow-y-auto"
+        data-lenis-prevent
+        className="lightbox-scroll relative flex-1 overflow-y-auto overscroll-contain"
+        style={{ scrollbarGutter: "stable both-edges" }}
         onClick={(e) => {
-          // clicks on the dark padding around the image close
           if (e.target === e.currentTarget) onClose();
         }}
+        onWheel={(e) => e.stopPropagation()}
       >
         <div className="mx-auto w-full max-w-[1100px] px-4 pb-16 pt-2 md:px-10">
           <img
             key={current.id}
             src={current.full}
             alt={`V&V Boutique — ${current.label}`}
-            className="w-full rounded-md transition-opacity duration-500"
+            className="block w-full rounded-md transition-opacity duration-500"
             style={{
               boxShadow: "0 30px 100px rgba(0,0,0,0.7), 0 0 1px rgba(255,255,255,0.06)",
               opacity: isReady ? 1 : 0,
@@ -144,7 +148,49 @@ export default function PageLightbox({ pages, openId, onClose, onJump }: Props) 
             onLoad={() => setIsReady(true)}
           />
         </div>
+
+        {/* First-load scroll hint — fades after a few seconds */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed left-1/2 top-[88px] z-10 -translate-x-1/2 rounded-full border border-white/20 bg-black/55 px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-bone-50/90"
+          style={{
+            backdropFilter: "blur(6px)",
+            animation: "lbHint 4s ease-in-out forwards",
+          }}
+        >
+          ↓ Scroll to see the full page
+        </div>
       </div>
+
+      <style jsx global>{`
+        /* Visible scrollbar inside lightbox so users know it scrolls */
+        .lightbox-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(245,245,243,0.35) transparent;
+        }
+        .lightbox-scroll::-webkit-scrollbar {
+          width: 10px;
+        }
+        .lightbox-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .lightbox-scroll::-webkit-scrollbar-thumb {
+          background: rgba(245,245,243,0.25);
+          border-radius: 10px;
+          border: 2px solid transparent;
+          background-clip: padding-box;
+        }
+        .lightbox-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(245,245,243,0.5);
+          background-clip: padding-box;
+        }
+        @keyframes lbHint {
+          0% { opacity: 0; transform: translate(-50%, 8px); }
+          15% { opacity: 1; transform: translate(-50%, 0); }
+          75% { opacity: 1; transform: translate(-50%, 0); }
+          100% { opacity: 0; transform: translate(-50%, -4px); }
+        }
+      `}</style>
 
       {/* Bottom dock — page chips for jumping */}
       <div className="shrink-0 border-t border-white/8 px-5 py-4 md:px-8">
