@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import SplitText from "../system/SplitText";
 import AboutNow from "./AboutNow";
-import AboutArtifacts from "./AboutArtifacts";
 import AboutStack from "./AboutStack";
 
 const LINES = [
@@ -73,10 +72,7 @@ export default function About() {
           ))}
         </div>
 
-        {/* Editorial archive row — sits in the body column, no overlap */}
-        <AboutArtifacts />
-
-        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-2 md:gap-20">
+        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-24 md:grid-cols-2 md:gap-20">
           <div>
             <div className="eyebrow mb-4">Practice</div>
             <p className="max-w-[42ch] text-[15px] leading-[1.7] text-bone-200/80">
