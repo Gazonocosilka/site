@@ -57,45 +57,49 @@ export default function AboutStack() {
         </span>
       </div>
 
-      {/* Groups */}
-      <div className="space-y-8 md:space-y-10">
+      {/* Groups — plain text labels, not buttons. Each tool reads as
+          information, not as something clickable. Generous gap between the
+          group label column and the tool list. */}
+      <div className="space-y-10 md:space-y-12">
         {STACK.map((row) => (
-          <div key={row.group} className="grid grid-cols-12 items-baseline gap-4 md:gap-6">
-            <div className="col-span-12 md:col-span-2">
+          <div
+            key={row.group}
+            className="grid grid-cols-12 items-baseline gap-4 md:gap-x-16"
+          >
+            <div className="col-span-12 md:col-span-3">
               <div
                 className="mono text-bone-200"
-                style={{ fontSize: 12, letterSpacing: "0.28em" }}
+                style={{ fontSize: 12, letterSpacing: "0.3em" }}
               >
                 {row.group}
               </div>
               <div
-                className="mono mt-1 text-bone-400"
+                className="mono mt-1.5 text-bone-400"
                 style={{ fontSize: 10 }}
               >
                 {String(row.tools.length).padStart(2, "0")}
               </div>
             </div>
-            <ul className="col-span-12 flex flex-wrap items-center gap-2.5 md:col-span-10">
+            <ul className="col-span-12 flex flex-wrap items-center gap-x-6 gap-y-3 md:col-span-9">
               {row.tools.map((t) => (
-                <li key={t}>
+                <li
+                  key={t}
+                  className="inline-flex items-center gap-2.5 text-bone-50"
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 400,
+                    letterSpacing: "0.005em",
+                  }}
+                >
                   <span
-                    className="glass inline-flex items-center gap-2.5 rounded-full px-4 py-2.5 text-[13px] text-bone-50 transition-all duration-500 hover:-translate-y-0.5"
+                    aria-hidden
+                    className="block h-1 w-1 rounded-full"
                     style={{
-                      letterSpacing: "0.02em",
-                      boxShadow:
-                        "0 0 24px rgba(139,168,255,0.10), inset 0 1px 0 rgba(255,255,255,0.06)",
+                      background: "var(--accent)",
+                      opacity: 0.7,
                     }}
-                  >
-                    <span
-                      aria-hidden
-                      className="block h-1.5 w-1.5 rounded-full"
-                      style={{
-                        background: "var(--accent)",
-                        boxShadow: "0 0 8px var(--accent)",
-                      }}
-                    />
-                    {t}
-                  </span>
+                  />
+                  {t}
                 </li>
               ))}
             </ul>
