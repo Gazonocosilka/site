@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Slot from "../projects/Slot";
 import VVPreview from "../projects/previews/VVPreview";
+import VVStoryboard from "./vv/VVStoryboard";
+import { VVWireframe, VVTypeSystem, VVPalette, VVLookbook } from "./vv/VVMocks";
 
 // --- Content (generated from the storyboard + brand notes) ---
 
@@ -250,27 +252,44 @@ export default function VVCaseStudy() {
           </div>
         </section>
 
-        {/* === Process visuals — image slots for screenshots === */}
+        {/* === Process visuals — SVG/CSS mocks (will be swapped for photography later) === */}
         <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-32 md:px-12">
           <div className="col-span-12 md:col-span-6">
             <Slot
-              asset="vv-process-01"
-              label="Brand sketch"
+              asset="vv-process-wireframe"
+              label="Open wireframe"
               style={{ aspectRatio: "4 / 5", borderRadius: 4 }}
-            />
+            >
+              <VVWireframe />
+            </Slot>
           </div>
           <div className="col-span-12 grid grid-rows-2 gap-6 md:col-span-6">
             <Slot
-              asset="vv-process-02"
+              asset="vv-process-lookbook"
               label="Lookbook spread"
               style={{ aspectRatio: "4 / 3", borderRadius: 4 }}
-            />
+            >
+              <VVLookbook />
+            </Slot>
             <Slot
-              asset="vv-process-03"
+              asset="vv-process-type"
               label="Type system"
               style={{ aspectRatio: "4 / 3", borderRadius: 4 }}
-            />
+            >
+              <VVTypeSystem />
+            </Slot>
           </div>
+        </section>
+
+        {/* === Palette strip === */}
+        <section className="mx-auto mt-10 max-w-[1400px] px-6 md:mt-12 md:px-12">
+          <Slot
+            asset="vv-process-palette"
+            label="Palette"
+            style={{ aspectRatio: "16 / 5", borderRadius: 4 }}
+          >
+            <VVPalette />
+          </Slot>
         </section>
 
         {/* === Key UX insights === */}
@@ -303,7 +322,34 @@ export default function VVCaseStudy() {
           </div>
         </section>
 
-        {/* === Wide screenshot slot === */}
+        {/* === User-journey storyboard — recreated from the original research === */}
+        <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-12 md:col-span-3">
+              <div className="mono opacity-60">04 · Journey</div>
+              <h2
+                className="display mt-4"
+                style={{
+                  fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)",
+                  lineHeight: 1.05,
+                  fontWeight: 500,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Storyboard — 09 frames
+              </h2>
+              <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
+                Nine moments mapped end-to-end, tagged by purpose. Two
+                slow-down frames mark the highest-stakes UX tensions.
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-9">
+              <VVStoryboard />
+            </div>
+          </div>
+        </section>
+
+        {/* === Wide screenshot slot (kept for a future real screenshot) === */}
         <section className="mx-auto mt-24 max-w-[1400px] px-6 md:mt-32 md:px-12">
           <Slot
             asset="vv-screen-wide"
@@ -316,7 +362,7 @@ export default function VVCaseStudy() {
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
-              <div className="mono opacity-60">04 · Outcome</div>
+              <div className="mono opacity-60">05 · Outcome</div>
               <h2
                 className="display mt-4"
                 style={{
