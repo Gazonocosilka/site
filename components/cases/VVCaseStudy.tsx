@@ -241,18 +241,14 @@ export default function VVCaseStudy() {
           </div>
         </section>
 
-        {/* === Design system — palette + type === */}
-        <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-32 md:px-12">
-          <div className="col-span-12 md:col-span-7">
-            <DesignBlock title="Palette · 05 stops">
-              <VVPalette />
-            </DesignBlock>
-          </div>
-          <div className="col-span-12 md:col-span-5">
-            <DesignBlock title="Type system · 02 families">
-              <VVTypeSystem />
-            </DesignBlock>
-          </div>
+        {/* === Design system — palette + type, equal width / equal height === */}
+        <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-1 gap-6 px-6 md:mt-32 md:grid-cols-2 md:px-12">
+          <DesignBlock title="Palette · 05 stops">
+            <VVPalette />
+          </DesignBlock>
+          <DesignBlock title="Type system · 02 families">
+            <VVTypeSystem />
+          </DesignBlock>
         </section>
 
         {/* === Insights === */}
