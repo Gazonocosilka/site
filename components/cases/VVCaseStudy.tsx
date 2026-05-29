@@ -42,15 +42,13 @@ const OUTCOMES: Array<[string, string]> = [
   ["Honest, documented UX critique as part of the brand handover", "Strategy"],
 ];
 
-// Pages of the V&V site — each has a thumbnail (viewport-sized) and a full-page screenshot
+// Pages of the V&V site — each has a thumbnail (top of page) and a full-page screenshot
 const PAGES: LightboxPage[] = [
   { id: "home", label: "Home", thumb: "/vv-shots/vv-home.jpg", full: "/vv-shots/vv-full-home.jpg" },
   { id: "shop", label: "Shop", thumb: "/vv-shots/vv-shop.jpg", full: "/vv-shots/vv-full-shop.jpg" },
   { id: "lookbook", label: "Lookbook", thumb: "/vv-shots/vv-lookbook.jpg", full: "/vv-shots/vv-full-lookbook.jpg" },
   { id: "about", label: "About", thumb: "/vv-shots/vv-about.jpg", full: "/vv-shots/vv-full-about.jpg" },
   { id: "size-guide", label: "Size guide", thumb: "/vv-shots/vv-size-guide.jpg", full: "/vv-shots/vv-full-size-guide.jpg" },
-  { id: "checkout", label: "Checkout", thumb: "/vv-shots/vv-checkout.jpg", full: "/vv-shots/vv-full-checkout.jpg" },
-  { id: "faq", label: "FAQ", thumb: "/vv-shots/vv-faq.jpg", full: "/vv-shots/vv-full-faq.jpg" },
   { id: "contact", label: "Contact", thumb: "/vv-shots/vv-contact.jpg", full: "/vv-shots/vv-full-contact.jpg" },
 ];
 
