@@ -156,7 +156,9 @@ html.lenis body {
     inset 0 -1px 0 rgba(0, 0, 0, 0.4);
 }
 
-/* Char reveal helper (used by SplitText) */
+/* Char reveal helper (used by SplitText). No clipping mask any more — the
+   reveal animation is gentle enough (small slide + blur clear + opacity)
+   that it doesn't need to be masked to look intentional. */
 .char,
 .word {
   display: inline-block;
@@ -164,16 +166,8 @@ html.lenis body {
 }
 
 .char-mask {
-  /* overflow: clip + clip-margin lets character descenders (g, y, f, p
-     tails that sit below the baseline) render past the clip box without
-     looking chopped, while keeping the slide-up reveal animation intact.
-     No padding hacks → no overlap between lines. */
-  overflow: hidden;
-  overflow: clip;
-  overflow-clip-margin: 0.35em;
   display: inline-block;
-  vertical-align: bottom;
-  line-height: 1;
+  vertical-align: baseline;
 }
 
 /* Reduced motion */

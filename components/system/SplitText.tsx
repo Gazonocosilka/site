@@ -52,16 +52,18 @@ export default function SplitText({
       return;
     }
 
+    // Gentle slide-in: small yPercent so chars don't visually push into the
+    // next line, plus opacity + blur clear. No clipping mask needed.
     const from = {
-      yPercent: 110,
+      yPercent: 32,
       opacity: 0,
-      filter: blur ? "blur(8px)" : "blur(0px)",
+      filter: blur ? "blur(10px)" : "blur(0px)",
     };
     const to = {
       yPercent: 0,
       opacity: 1,
       filter: "blur(0px)",
-      duration: 1.1,
+      duration: 1.2,
       ease: "power3.out",
       stagger: { each: stagger, from: "start" as const },
       delay,

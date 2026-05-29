@@ -110,8 +110,8 @@ export default function Contact() {
           className="display"
           style={{
             fontSize: "clamp(2.6rem, 9vw, 9rem)",
-            lineHeight: 0.92,
-            letterSpacing: "-0.05em",
+            lineHeight: 1.05,
+            letterSpacing: "-0.045em",
             fontWeight: 200,
             color: "var(--bone-50)",
           }}
@@ -125,8 +125,8 @@ export default function Contact() {
           className="display-italic"
           style={{
             fontSize: "clamp(2.6rem, 9vw, 9rem)",
-            lineHeight: 0.92,
-            letterSpacing: "-0.05em",
+            lineHeight: 1.05,
+            letterSpacing: "-0.045em",
             fontWeight: 400,
             color: "var(--bone-50)",
           }}
