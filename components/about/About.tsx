@@ -28,12 +28,13 @@ interface FloatingCard {
   variant: "wire" | "type" | "swatch" | "grid";
 }
 
+// Cards live around the periphery only — never crossing into the body copy
+// column. Positions tuned for ~1200–1440px viewports.
 const CARDS: FloatingCard[] = [
-  { label: "wireframe · home", detail: "v04", x: "8%", y: "14%", rot: -7, w: "180px", h: "120px", variant: "wire" },
-  { label: "type · display", detail: "Gambarino · 96", x: "72%", y: "10%", rot: 5, w: "220px", h: "100px", variant: "type" },
-  { label: "palette · cinema", detail: "5 · stops", x: "78%", y: "62%", rot: -4, w: "190px", h: "70px", variant: "swatch" },
-  { label: "grid · 12 col", detail: "1440 · 80", x: "5%", y: "68%", rot: 6, w: "200px", h: "130px", variant: "grid" },
-  { label: "sketch · logo·v2", detail: "ink · b", x: "55%", y: "78%", rot: -2, w: "150px", h: "150px", variant: "wire" },
+  { label: "wireframe · home", detail: "v04", x: "3%", y: "8%", rot: -7, w: "150px", h: "100px", variant: "wire" },
+  { label: "type · display", detail: "Tasa · 92", x: "82%", y: "6%", rot: 5, w: "170px", h: "85px", variant: "type" },
+  { label: "palette · cinema", detail: "5 · stops", x: "85%", y: "82%", rot: -4, w: "160px", h: "65px", variant: "swatch" },
+  { label: "grid · 12 col", detail: "1440 · 80", x: "2%", y: "84%", rot: 6, w: "170px", h: "110px", variant: "grid" },
 ];
 
 export default function About() {
@@ -157,24 +158,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* Signature mark */}
-        <div className="mt-20 flex items-center gap-5">
-          <svg width="86" height="40" viewBox="0 0 86 40" fill="none">
-            <path
-              d="M3 28 C 12 4, 22 36, 32 16 S 52 32, 60 14 78 30, 84 18"
-              stroke="var(--bone-50)"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              fill="none"
-              style={{
-                strokeDasharray: 200,
-                strokeDashoffset: 200,
-                animation: "drawSig 2.4s var(--ease-cinema) 0.3s forwards",
-              }}
-            />
-          </svg>
-          <div className="mono opacity-60">Inna · 2026</div>
-        </div>
       </div>
 
       {/* Floating archive cards */}
@@ -202,11 +185,6 @@ export default function About() {
         ))}
       </div>
 
-      <style jsx global>{`
-        @keyframes drawSig {
-          to { stroke-dashoffset: 0; }
-        }
-      `}</style>
     </section>
   );
 }
