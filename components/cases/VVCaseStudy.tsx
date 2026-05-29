@@ -12,34 +12,35 @@ const BRIEF = {
   client: "V&V Boutique London",
   sector: "Luxury fashion · Womenswear",
   year: "2025",
-  role: "Brand identity · Web design · UX case study",
+  role: "Identity · Web · Photo retouching",
   scope:
-    "Identity system, lookbook art direction, e-commerce flow, UX critique mapping the moments where trust is earned or lost.",
+    "My first proper client project — built the brand and the online shop end-to-end, plus re-edited most of the product photography to give it one consistent look.",
 };
 
 const CHALLENGE = [
-  "Two founders. Ukrainian roots. London base. They had a strong emotional brand — handwritten care, modest production, fabrics chosen one bolt at a time — but the website existed only as a transactional shop. The story stopped at the homepage.",
-  "The brief: build a digital flagship that lets people FEEL the brand before they're asked to buy from it, and design an honest critique of where the current experience breaks trust.",
+  "V&V Boutique is a small Ukrainian fashion label based in London — two founders, a tight production line, and an Instagram following that liked them long before they had a real website.",
+  "They came to me wanting a proper digital home. We agreed on: a clear brand, a shop that doesn't feel like a spreadsheet, and a lookbook system they could reuse for every drop without my help.",
+  "The thing that ended up taking the most time wasn't the layout. It was the photos. The original product shoots had a mix of backgrounds — some on clean brick walls, others on cluttered studio floors, some with bad lighting. To get the whole shop feeling like one boutique, I sat down and re-edited roughly 70% of the catalogue by hand. A few originals are still in there if you look closely — they were good enough as-is.",
 ];
 
 const PROCESS = [
-  { phase: "01", title: "Discovery", blurb: "Mapped the existing site as a user, recorded every hesitation moment, then re-mapped it as a designer. Read every founder interview and Instagram caption to find the brand's actual voice.", out: "A one-page tension document — every place where the editorial tone of the brand and the friction of the storefront stopped agreeing." },
-  { phase: "02", title: "Identity", blurb: "Treated the wordmark as a frame, not a logo. Built a type system around an ultra-thin display serif (for hero moments) and a tight grotesque (for product copy). Anchored the palette in warm bone, deep ink and silver — no decoration.", out: "Logotype, type pairing, palette, photographic direction, packaging marks." },
-  { phase: "03", title: "Lookbook system", blurb: 'A "season-as-story" template: each drop gets a horizontal lookbook with monochrome photography, large negative space and quiet captions. The same template runs in print, on the site and as a vertical Reel.', out: "Reusable lookbook system + Spring '26 first release." },
-  { phase: "04", title: "Storefront UX", blurb: "Re-flowed the shop around the moments of doubt: size, styling, returns. Pulled the lookbook into the PDP so the user can see the garment in context without leaving the page.", out: "Re-thought PDP, integrated size guide, refreshed checkout reassurance." },
+  { phase: "01", title: "Listening", blurb: "I went through the founders' old site and Instagram as if I were a customer, and wrote down every moment I hesitated — every 'wait, how does this fit?' and 'where's the returns policy?' That list became the brief.", out: "A one-page tension doc the three of us argued over for an evening." },
+  { phase: "02", title: "Identity", blurb: "Pulled the wordmark apart and rebuilt it as a frame for the photography rather than a stamp. Paired a thin serif for hero moments with a grotesque for product copy. Palette anchored in warm bone, ink, silver — nothing decorative.", out: "Logotype, type pair, palette, photographic direction." },
+  { phase: "03", title: "Photo retouching", blurb: "The slow part. Every product got the same treatment — cleaned backgrounds, matched white balance, gentle shadow work — so a customer scrolling the grid stops noticing where each photo was taken and just sees the clothes.", out: "~70% of the catalogue re-edited; a small guide so future shoots don't need this much rescue." },
+  { phase: "04", title: "Storefront UX", blurb: "Re-flowed the shop around the moments people actually pause: size, styling, returns. Pulled the lookbook into the product page so the user can see a piece styled in context without leaving the screen.", out: "Re-thought product page, integrated size guide, lookbook system reused on every drop since." },
 ];
 
 const TENSIONS = [
-  { label: "Key tension · Product page", body: "The user wants to buy — but hesitates. Will it fit? What does it look like styled? Where's the size chart? The PDP is the highest-stakes moment in the journey and the first place friction starts costing money." },
-  { label: "Decision moment · Checkout", body: "Delivery info and returns policy are the last trust signals before commitment. If they arrive after the user has already added doubt to the basket, they're too late. Reassurance has to be in view at the moment the decision is being made." },
-  { label: "Reframe · The whole journey", body: "The gap between editorial warmth (homepage, lookbook, about page) and checkout friction (PDP, size, returns) is the real design opportunity. The site needed to feel like one continuous brand experience instead of two systems sharing a logo." },
+  { label: "Key tension · Product page", body: "I kept hovering on the product page when I tested the old site. Will it fit me? What does it look like worn? Where's the size chart? Every one of those questions used to send me off the page, and most people who leave don't come back." },
+  { label: "Decision moment · Checkout", body: "By the time the user reaches checkout, they're already half-talked-out. Delivery info and returns policy need to be in view at the moment they're about to commit, not buried in a footer link they have to hunt for." },
+  { label: "The bigger picture", body: "The brand felt warm everywhere except the part that asked for money. Fixing that gap — making the shop feel like the same boutique as the about page — turned out to be the whole project." },
 ];
 
 const OUTCOMES: Array<[string, string]> = [
-  ["+ Unified visual system across web, print, social", "Consistency"],
-  ["Lookbook embedded into every product page", "Conversion"],
-  ["Editorial homepage that earns the scroll, not just decorates it", "Engagement"],
-  ["Honest, documented UX critique as part of the brand handover", "Strategy"],
+  ["A brand system that reads the same on the site, in print and on Instagram", "Consistency"],
+  ["~70% of the product catalogue re-shot in post — same background, same light, same boutique", "Photography"],
+  ["Lookbook template reused across three drops since launch with no further design help needed", "Handoff"],
+  ["A documented UX critique handed over alongside the build, so they know what to improve next", "Strategy"],
 ];
 
 // Pages of the V&V site — each has a thumbnail (top of page) and a full-page screenshot
@@ -99,10 +100,24 @@ export default function VVCaseStudy() {
             V&V Boutique
           </h1>
           <p className="mt-8 max-w-[64ch] text-[17px] leading-[1.6] text-bone-200/90">
-            A brand identity and digital flagship for a Ukrainian luxury fashion
-            house operating from London — and a UX case study mapping the
-            moments where trust is earned or lost.
+            My first proper client project — a brand and online shop for V&V Boutique,
+            a small Ukrainian fashion label working out of London. Identity, the
+            full storefront, the lookbook system, and a lot of evenings spent
+            re-editing the product photography so the whole shop felt like one
+            boutique.
           </p>
+
+          {/* Personal note tag */}
+          <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/15 px-4 py-2">
+            <span
+              aria-hidden
+              className="block h-1.5 w-1.5 rounded-full"
+              style={{ background: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }}
+            />
+            <span className="text-[11px] uppercase tracking-[0.3em] text-bone-200">
+              Client project · 2025
+            </span>
+          </div>
 
           <div className="mt-12 grid grid-cols-2 gap-6 border-t border-white/10 pt-8 md:grid-cols-5 md:gap-10">
             <Meta k="Client" v={BRIEF.client} />
@@ -148,8 +163,9 @@ export default function VVCaseStudy() {
               </h2>
             </div>
             <p className="max-w-[40ch] text-[14px] leading-[1.55] text-bone-200/75">
-              The full V&amp;V Boutique flow at 1440 × 900 — click any tile
-              to scroll through the entire page.
+              The whole site, captured at 1440 × 900. Click any tile and
+              you can scroll through that page top to bottom — same as a
+              visitor would see it.
             </p>
           </div>
 
@@ -174,7 +190,7 @@ export default function VVCaseStudy() {
         >
           <div className="col-span-12 md:col-span-3">
             <div className="mono opacity-60">02 · Brief</div>
-            <h2 className="display mt-4" style={titleStyle}>The challenge</h2>
+            <h2 className="display mt-4" style={titleStyle}>How this one started</h2>
           </div>
           <div className="col-span-12 space-y-6 text-[16px] leading-[1.65] text-bone-200/90 md:col-span-8 md:col-start-5">
             {CHALLENGE.map((p, i) => (
@@ -188,7 +204,7 @@ export default function VVCaseStudy() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">03 · Process</div>
-              <h2 className="display mt-4" style={titleStyle}>From listening to shipping</h2>
+              <h2 className="display mt-4" style={titleStyle}>What I actually did</h2>
             </div>
             <div className="col-span-12 md:col-span-9">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
@@ -244,7 +260,7 @@ export default function VVCaseStudy() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">04 · Insights</div>
-              <h2 className="display mt-4" style={titleStyle}>Where trust is won or lost</h2>
+              <h2 className="display mt-4" style={titleStyle}>The moments people pause</h2>
             </div>
             <div className="col-span-12 space-y-10 md:col-span-9">
               {TENSIONS.map((t, i) => (
@@ -262,10 +278,10 @@ export default function VVCaseStudy() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">05 · Journey</div>
-              <h2 className="display mt-4" style={titleStyle}>Storyboard — 09 frames</h2>
+              <h2 className="display mt-4" style={titleStyle}>Walking through the site</h2>
               <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
-                Nine moments mapped end-to-end, tagged by purpose. Two
-                slow-down frames mark the highest-stakes UX tensions.
+                Nine moments I mapped before the rebuild — the order a real
+                customer goes through, with the two trickiest stops called out.
               </p>
             </div>
             <div className="col-span-12 md:col-span-9">
@@ -279,7 +295,7 @@ export default function VVCaseStudy() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">06 · Outcome</div>
-              <h2 className="display mt-4" style={titleStyle}>What shipped</h2>
+              <h2 className="display mt-4" style={titleStyle}>What I handed over</h2>
             </div>
             <div className="col-span-12 md:col-span-9">
               <ul className="divide-y divide-white/10">
@@ -299,8 +315,12 @@ export default function VVCaseStudy() {
           <div>
             <div className="mono opacity-60">End of case · 01</div>
             <h3 className="display mt-3" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 500, letterSpacing: "-0.02em", lineHeight: 1.05 }}>
-              Want to talk about something similar?
+              Got a project that needs this kind of attention?
             </h3>
+            <p className="mt-3 max-w-[44ch] text-[14px] leading-[1.55] text-bone-200/75">
+              Send me a note — I read every one and I'm
+              picky about what I take on.
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <Link

@@ -9,7 +9,7 @@ export default function VVBoutique() {
       index="01"
       genre="Editorial · Boutique"
       title="V&V Boutique"
-      description="Brand identity and digital flagship for a Ukrainian luxury fashion house operating from London. Editorial direction, lookbook system, e-commerce flow and a UX case-study mapping the gap between brand warmth and checkout friction."
+      description="My first proper client project — brand, online shop and lookbook system for V&V Boutique, a small Ukrainian fashion label working out of London. Most of the product photos I had to re-edit by hand to give the whole shop one consistent look."
       meta={[
         ["Year", "2025"],
         ["Role", "Brand · Web · UX"],
