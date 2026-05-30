@@ -371,62 +371,124 @@ function Meta({ k, v, wide }: { k: string; v: string; wide?: boolean }) {
 }
 
 /**
- * Live mini-demo of the cursor-blob behaviour described in the case study.
- * Tracks the mouse inside its container, blooms larger + softly pulses
- * when hovering the demo button — users can feel what's described.
+ * Live mini-demo of the cursor behaviour from the practice site.
+ * - Soft gradient blob follows the mouse with lerp easing
+ * - As it moves, it drops sparkle "trace" particles in the brand
+ *   colours that scale + fade out over 1s — this is the "blink"
+ *   trail the user notices on the real site
+ * Mouse leaves: blob coasts to the centre.
  */
 function BlobDemo() {
   const ref = useRef<HTMLDivElement>(null);
   const blobRef = useRef<HTMLDivElement>(null);
-  const [hot, setHot] = useState(false);
+  const traceLayerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const box = ref.current;
     const blob = blobRef.current;
-    if (!box || !blob) return;
+    const traceLayer = traceLayerRef.current;
+    if (!box || !blob || !traceLayer) return;
+
+    const colors = ["#4f46e5", "#ec4899", "#06b6d4", "#3b82f6"];
     let mx = box.clientWidth / 2;
     let my = box.clientHeight / 2;
     let x = mx;
     let y = my;
     let raf = 0;
+    let inside = false;
+    let frame = 0;
+
     const tick = () => {
+      // Lerp the blob toward the cursor (or centre when mouse is out)
       x += (mx - x) * 0.12;
       y += (my - y) * 0.12;
       blob.style.transform = `translate3d(${x - 110}px, ${y - 110}px, 0)`;
+
+      // Drop a trace particle every 2 frames while moving inside the box
+      frame++;
+      if (inside && frame % 2 === 0) {
+        const dx = mx - x;
+        const dy = my - y;
+        const speed = Math.hypot(dx, dy);
+        if (speed > 0.4) {
+          spawnParticle(x, y);
+        }
+      }
       raf = requestAnimationFrame(tick);
     };
+
+    function spawnParticle(px: number, py: number) {
+      const p = document.createElement("div");
+      const size = Math.random() * 20 + 20;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      p.style.position = "absolute";
+      p.style.left = `${px}px`;
+      p.style.top = `${py}px`;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.borderRadius = "50%";
+      p.style.transform = "translate(-50%, -50%)";
+      p.style.background = color;
+      p.style.filter = "blur(10px)";
+      p.style.pointerEvents = "none";
+      p.style.zIndex = "1";
+      p.style.animation = "nx-trace 1s cubic-bezier(0.1,0.8,0.3,1) forwards";
+      traceLayer!.appendChild(p);
+      window.setTimeout(() => p.remove(), 1000);
+    }
+
     const onMove = (e: MouseEvent) => {
       const r = box.getBoundingClientRect();
       mx = e.clientX - r.left;
       my = e.clientY - r.top;
+      inside = true;
     };
+    const onEnter = () => {
+      inside = true;
+    };
+    const onLeave = () => {
+      inside = false;
+      // ease back to centre
+      mx = box.clientWidth / 2;
+      my = box.clientHeight / 2;
+    };
+
     box.addEventListener("mousemove", onMove);
+    box.addEventListener("mouseenter", onEnter);
+    box.addEventListener("mouseleave", onLeave);
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       box.removeEventListener("mousemove", onMove);
+      box.removeEventListener("mouseenter", onEnter);
+      box.removeEventListener("mouseleave", onLeave);
+      traceLayer.innerHTML = "";
     };
   }, []);
 
   return (
-    <div ref={ref} className="absolute inset-0">
+    <div ref={ref} className="absolute inset-0 overflow-hidden">
+      {/* Trace particles layer */}
+      <div ref={traceLayerRef} aria-hidden className="absolute inset-0 z-[1] pointer-events-none" />
+
+      {/* The blob itself (above the trace) */}
       <div
         ref={blobRef}
-        className="pointer-events-none absolute left-0 top-0 transition-[width,height,opacity] duration-500 ease-cinema"
+        className="pointer-events-none absolute left-0 top-0 z-[2]"
         style={{
           width: 220,
           height: 220,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle at 35% 35%, rgba(255,160,210,0.65), rgba(168,140,255,0.45) 45%, rgba(120,160,255,0.0) 75%)",
+            "radial-gradient(circle at 35% 35%, rgba(255,160,210,0.65), rgba(168,140,255,0.45) 45%, rgba(120,160,255,0) 75%)",
           filter: "blur(18px)",
-          opacity: hot ? 1 : 0.85,
           transform: "translate3d(-220px, -220px, 0)",
           willChange: "transform",
-          animation: hot ? "nx-blob-blink 1.4s ease-in-out infinite" : "none",
         }}
       />
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+
+      {/* Foreground content sits above the blob */}
+      <div className="pointer-events-none absolute inset-0 z-[3] flex flex-col items-center justify-center text-center">
         <div
           className="display"
           style={{
@@ -440,8 +502,7 @@ function BlobDemo() {
           Crafting{" "}
           <span
             style={{
-              background:
-                "linear-gradient(90deg, #ff7eb6 0%, #a47cff 60%, #6ea2ff 100%)",
+              background: "linear-gradient(90deg, #ff7eb6 0%, #a47cff 60%, #6ea2ff 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -452,23 +513,24 @@ function BlobDemo() {
           <br />
           That Inspire.
         </div>
-        <button
-          onMouseEnter={() => setHot(true)}
-          onMouseLeave={() => setHot(false)}
-          className="mt-5 rounded-full px-6 py-3 text-[12px] font-medium uppercase tracking-[0.22em] text-white transition-transform duration-500 hover:-translate-y-0.5"
-          style={{
-            background:
-              "linear-gradient(90deg, #ff7eb6, #a47cff 60%, #6ea2ff)",
-          }}
+        <div
+          className="mt-5 text-[12px] uppercase tracking-[0.22em] text-ink-900/70"
+          style={{ fontWeight: 500 }}
         >
-          Hover me · the blob blinks
-        </button>
+          Move your mouse here ↑ to see the trail
+        </div>
       </div>
 
       <style jsx global>{`
-        @keyframes nx-blob-blink {
-          0%, 100% { opacity: 1; filter: blur(18px); }
-          50%     { opacity: 0.5; filter: blur(28px); }
+        @keyframes nx-trace {
+          0% {
+            opacity: 0.9;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.2);
+          }
         }
       `}</style>
     </div>
