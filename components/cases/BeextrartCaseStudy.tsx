@@ -358,28 +358,25 @@ export default function BeextrartCaseStudy() {
               </p>
             </div>
             <div className="col-span-12 md:col-span-9">
-              <div className="grid grid-cols-12 gap-5">
-                <div className="col-span-12 md:col-span-5">
-                  <ArtPanel
-                    src="/bee-shots/bee-packaging.jpg"
-                    label="Limited Edition · box artwork · still"
-                    bg="#1d0a14"
-                    ratio="3 / 4"
-                    cover
-                    onClick={() => openPanel("packaging")}
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-7">
-                  <ArtPanel
-                    src="/bee-shots/bee-box-spec.jpg"
-                    label="Box · manufacturer spec · still"
-                    bg="#ffffff"
-                    ratio="1800 / 1449"
-                    onClick={() => openPanel("box-spec")}
-                    contain
-                    padInset="2%"
-                  />
-                </div>
+              {/* Two equal tiles — same column width, same square aspect */}
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <ArtPanel
+                  src="/bee-shots/bee-packaging.jpg"
+                  label="Limited Edition · box artwork · still"
+                  bg="#1d0a14"
+                  ratio="1 / 1"
+                  cover
+                  onClick={() => openPanel("packaging")}
+                />
+                <ArtPanel
+                  src="/bee-shots/bee-box-spec.jpg"
+                  label="Box · manufacturer spec · still"
+                  bg="#ffffff"
+                  ratio="1 / 1"
+                  onClick={() => openPanel("box-spec")}
+                  contain
+                  padInset="1%"
+                />
               </div>
             </div>
           </div>
@@ -398,25 +395,22 @@ export default function BeextrartCaseStudy() {
               </p>
             </div>
             <div className="col-span-12 md:col-span-9">
-              <div className="grid grid-cols-12 gap-5">
-                <div className="col-span-12 md:col-span-7">
-                  <VideoPanel
-                    src="/bee-shots/bee-burgundy.mp4"
-                    poster="/bee-shots/bee-product-burgundy.jpg"
-                    label="Burgundy lashes · collab pack · video"
-                    ratio="3 / 4"
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-5">
-                  <ArtPanel
-                    src="/bee-shots/bee-collab-poster.jpg"
-                    label="Collab leaflet · A5 · still"
-                    bg="#0e0405"
-                    ratio="3 / 4"
-                    cover
-                    onClick={() => openPanel("poster")}
-                  />
-                </div>
+              {/* Two equal tiles — same column width, same portrait aspect */}
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <VideoPanel
+                  src="/bee-shots/bee-burgundy.mp4"
+                  poster="/bee-shots/bee-product-burgundy.jpg"
+                  label="Burgundy lashes · collab pack · video"
+                  ratio="3 / 4"
+                />
+                <ArtPanel
+                  src="/bee-shots/bee-collab-poster.jpg"
+                  label="Collab leaflet · A5 · still"
+                  bg="#0e0405"
+                  ratio="3 / 4"
+                  cover
+                  onClick={() => openPanel("poster")}
+                />
               </div>
             </div>
           </div>
@@ -426,8 +420,11 @@ export default function BeextrartCaseStudy() {
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="mb-8 flex flex-col items-start justify-between gap-3 md:flex-row md:items-baseline">
             <div>
-              <div className="mono opacity-60">05 · Social</div>
-              <h2 className="display mt-4" style={titleStyle}>Lives on Instagram</h2>
+              <div className="mono opacity-60">05 · Branding design</div>
+              <h2 className="display mt-4" style={titleStyle}>Branding design:</h2>
+              <p className="mt-3 text-[13px] uppercase tracking-[0.28em] text-bone-200/65">
+                Live on Instagram
+              </p>
             </div>
             <p className="max-w-[44ch] text-[14px] leading-[1.55] text-bone-200/75">
               Four Reels from{" "}
