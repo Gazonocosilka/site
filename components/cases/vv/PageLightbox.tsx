@@ -14,6 +14,7 @@ interface Props {
   openId: string | null;
   onClose: () => void;
   onJump: (id: string) => void;
+  brand?: string; // top-bar label (defaults to "V&V Boutique" for backwards compat)
 }
 
 /**
@@ -21,7 +22,7 @@ interface Props {
  * Shows the entire page as a scrollable image inside a dark modal.
  * Keyboard: Esc closes, ← / → switch pages.
  */
-export default function PageLightbox({ pages, openId, onClose, onJump }: Props) {
+export default function PageLightbox({ pages, openId, onClose, onJump, brand = "V&V Boutique" }: Props) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isReady, setIsReady] = useState(false);
@@ -81,7 +82,7 @@ export default function PageLightbox({ pages, openId, onClose, onJump }: Props) 
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label={`V&V Boutique — ${current.label}`}
+      aria-label={`${brand} — ${current.label}`}
       className="fixed inset-0 z-[200] flex flex-col"
       onClick={(e) => {
         // Click outside the image column closes the modal
@@ -97,7 +98,7 @@ export default function PageLightbox({ pages, openId, onClose, onJump }: Props) 
       <div className="flex shrink-0 items-center justify-between gap-4 px-5 py-4 md:px-8 md:py-5">
         <div className="flex items-baseline gap-4">
           <span className="mono opacity-60" style={{ fontSize: 11 }}>
-            V&amp;V Boutique
+            {brand}
           </span>
           <span className="mono opacity-40" style={{ fontSize: 11 }}>
             /

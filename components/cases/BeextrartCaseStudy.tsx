@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import PageLightbox, { LightboxPage } from "./vv/PageLightbox";
 
 // --- Content ---
 
@@ -99,9 +101,23 @@ const SOCIAL: Array<{ label: string; href: string; kind: "reel" | "highlight" }>
   },
 ];
 
+// Lightbox catalogue — every asset on the page that should open full-size
+const LIGHTBOX_PAGES: LightboxPage[] = [
+  { id: "packaging", label: "Limited Edition · box artwork", thumb: "/bee-shots/bee-packaging.jpg", full: "/bee-shots/bee-packaging.jpg" },
+  { id: "logo",      label: "Logomark · primary",            thumb: "/bee-shots/bee-logo.jpg",      full: "/bee-shots/bee-logo.jpg" },
+  { id: "wordmark",  label: "Wordmark · leopard variant",     thumb: "/bee-shots/bee-wordmark.jpg",  full: "/bee-shots/bee-wordmark.jpg" },
+  { id: "box-spec",  label: "Box · manufacturer spec sheet",  thumb: "/bee-shots/bee-box-spec.jpg",  full: "/bee-shots/bee-box-spec.jpg" },
+  { id: "burgundy",  label: "Burgundy lashes · collab pack",  thumb: "/bee-shots/bee-product-burgundy.jpg", full: "/bee-shots/bee-product-burgundy.jpg" },
+  { id: "poster",    label: "Collab leaflet · A5 print",      thumb: "/bee-shots/bee-collab-poster.jpg",    full: "/bee-shots/bee-collab-poster.jpg" },
+  { id: "content",   label: "Social content · Reel still",    thumb: "/bee-shots/bee-content.jpg",   full: "/bee-shots/bee-content.jpg" },
+];
+
 // --- Component ---
 
 export default function BeextrartCaseStudy() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const openPanel = (id: string) => setOpenId(id);
+
   return (
     <main className="relative w-full overflow-x-hidden bg-[#050505] text-bone-50">
       {/* Ambient background — pink + violet tint for this case */}
@@ -173,10 +189,14 @@ export default function BeextrartCaseStudy() {
           </div>
         </header>
 
-        {/* === Cover — the packaging illustration === */}
+        {/* === Cover — the packaging illustration, click to view full === */}
         <section className="mx-auto mt-16 max-w-[1400px] px-6 md:mt-24 md:px-12">
-          <div
-            className="relative overflow-hidden rounded-[6px] border border-white/10"
+          <button
+            type="button"
+            onClick={() => openPanel("packaging")}
+            data-cursor="view"
+            data-cursor-label="open"
+            className="group relative block w-full overflow-hidden rounded-[6px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
             style={{
               aspectRatio: "16 / 9",
               boxShadow:
@@ -186,11 +206,30 @@ export default function BeextrartCaseStudy() {
             <img
               src="/bee-shots/bee-packaging.jpg"
               alt="BEEXTRART Limited Edition box artwork"
-              className="absolute inset-0 h-full w-full object-cover object-center"
+              className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
             />
-          </div>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 flex items-end justify-between p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:p-5"
+              style={{
+                background:
+                  "linear-gradient(180deg, transparent 50%, rgba(5,5,5,0.85) 100%)",
+              }}
+            >
+              <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-bone-50">
+                <span
+                  className="block h-1.5 w-1.5 rounded-full"
+                  style={{ background: "var(--glow-pink)", boxShadow: "0 0 10px var(--glow-pink)" }}
+                />
+                Limited Edition
+              </span>
+              <span className="text-[11px] uppercase tracking-[0.28em] text-bone-50">
+                Open ↗
+              </span>
+            </div>
+          </button>
           <div className="mt-3 flex items-center justify-between text-bone-200/70" style={{ fontSize: 11 }}>
-            <span className="mono">Limited Edition · box artwork</span>
+            <span className="mono">↓ Click any image to see it full size</span>
             <span className="mono">@beextrart_eyelashes</span>
           </div>
         </section>
@@ -213,12 +252,14 @@ export default function BeextrartCaseStudy() {
               bg="#f5f5f3"
               ratio="1 / 1"
               big
+              onClick={() => openPanel("logo")}
             />
             <ArtPanel
               src="/bee-shots/bee-wordmark.jpg"
               label="Wordmark · leopard"
               bg="#f5f5f3"
               ratio="1 / 1"
+              onClick={() => openPanel("wordmark")}
             />
             <div
               className="relative overflow-hidden rounded-[4px] p-6"
@@ -251,15 +292,20 @@ export default function BeextrartCaseStudy() {
           </div>
         </section>
 
-        {/* === Packaging — spec sheet + product photo === */}
+        {/* === Packaging — spec sheet, full portrait so the cm dimensions read === */}
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">03 · Packaging</div>
               <h2 className="display mt-4" style={titleStyle}>For the manufacturer</h2>
               <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
-                Acrylic retail box. Leopard wordmark on top, clear sides
-                so the lashes show. Specced to the cm for the printer.
+                Acrylic retail box with the leopard wordmark printed on top
+                and clear sides so the product shows through. Specced to the
+                centimetre for the printer — top + the two side panels —
+                with a real-product photo for reference.
+              </p>
+              <p className="mt-3 max-w-[34ch] text-[13px] leading-[1.55] text-bone-200/65">
+                Click the image to view the full spec.
               </p>
             </div>
             <div className="col-span-12 md:col-span-9">
@@ -267,31 +313,51 @@ export default function BeextrartCaseStudy() {
                 src="/bee-shots/bee-box-spec.jpg"
                 label="Box · spec sheet"
                 bg="#ffffff"
-                ratio="16 / 11"
+                ratio="1400 / 1979"
+                onClick={() => openPanel("box-spec")}
+                contain
+                padInset="3%"
               />
             </div>
           </div>
         </section>
 
         {/* === Print — collab leaflet & product === */}
-        <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-32 md:px-12">
-          <div className="col-span-12 md:col-span-7">
-            <ArtPanel
-              src="/bee-shots/bee-product-burgundy.jpg"
-              label="Burgundy lashes · BEEXTRART × KARDIT STYLE"
-              bg="#1a0608"
-              ratio="3 / 4"
-              cover
-            />
-          </div>
-          <div className="col-span-12 md:col-span-5">
-            <ArtPanel
-              src="/bee-shots/bee-collab-poster.jpg"
-              label="Collab leaflet · A5"
-              bg="#0e0405"
-              ratio="3 / 4"
-              cover
-            />
+        <section className="mx-auto mt-24 max-w-[1400px] px-6 md:mt-32 md:px-12">
+          <div className="mb-8 grid grid-cols-12 gap-6">
+            <div className="col-span-12 md:col-span-3">
+              <div className="mono opacity-60">04 · Print</div>
+              <h2 className="display mt-4" style={titleStyle}>Collab drop</h2>
+              <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
+                BEEXTRART × KARDIT STYLE — burgundy lash strips in branded
+                cellophane pack, and an A5 leaflet that ships inside the
+                parcel ("колаборація про яку говорять усі").
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-9">
+              <div className="grid grid-cols-12 gap-5">
+                <div className="col-span-12 md:col-span-7">
+                  <ArtPanel
+                    src="/bee-shots/bee-product-burgundy.jpg"
+                    label="Burgundy lashes · collab pack"
+                    bg="#1a0608"
+                    ratio="3 / 4"
+                    cover
+                    onClick={() => openPanel("burgundy")}
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-5">
+                  <ArtPanel
+                    src="/bee-shots/bee-collab-poster.jpg"
+                    label="Collab leaflet · A5"
+                    bg="#0e0405"
+                    ratio="3 / 4"
+                    cover
+                    onClick={() => openPanel("poster")}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -452,6 +518,15 @@ export default function BeextrartCaseStudy() {
           </div>
         </footer>
       </article>
+
+      {/* Asset lightbox — full-size view of any clickable image, with prev/next */}
+      <PageLightbox
+        brand="BEEXTRART · eyelashes"
+        pages={LIGHTBOX_PAGES}
+        openId={openId}
+        onClose={() => setOpenId(null)}
+        onJump={(id) => setOpenId(id)}
+      />
     </main>
   );
 }
@@ -479,6 +554,9 @@ function ArtPanel({
   ratio,
   big,
   cover,
+  contain,
+  padInset,
+  onClick,
 }: {
   src: string;
   label: string;
@@ -486,30 +564,71 @@ function ArtPanel({
   ratio: string;
   big?: boolean;
   cover?: boolean;
+  contain?: boolean;
+  padInset?: string;
+  onClick?: () => void;
 }) {
-  return (
-    <div
-      className="relative overflow-hidden rounded-[4px] border border-white/10"
-      style={{ aspectRatio: ratio, background: bg }}
-    >
+  const padding = cover ? 0 : (padInset ?? (big ? "12%" : "16%"));
+  const fit = cover ? "cover" : "contain";
+  // Use a darker badge on light backgrounds, lighter on dark
+  const lightBg = bg === "#ffffff" || bg.startsWith("#f");
+
+  const inner = (
+    <>
       <img
         src={src}
         alt={label}
-        className="absolute inset-0 h-full w-full"
-        style={{
-          objectFit: cover ? "cover" : "contain",
-          padding: cover ? 0 : big ? "12%" : "16%",
-        }}
+        className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.025]"
+        style={{ objectFit: fit, padding }}
       />
+      {/* Label chip — adapts colour for light/dark backgrounds */}
       <span
-        className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-black/15 bg-white/80 px-2.5 py-1 text-[9px] uppercase tracking-[0.22em]"
+        className="pointer-events-none absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-[9px] uppercase tracking-[0.22em]"
         style={{
-          color: "#1a1a25",
+          background: lightBg ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.55)",
+          color: lightBg ? "#1a1a25" : "var(--bone-50)",
+          border: lightBg ? "1px solid rgba(0,0,0,0.10)" : "1px solid rgba(255,255,255,0.15)",
           backdropFilter: "blur(4px)",
         }}
       >
         {label}
       </span>
+      {/* "Open" affordance — only when clickable */}
+      {onClick && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 text-[9px] uppercase tracking-[0.22em] text-bone-50 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{ backdropFilter: "blur(6px)" }}
+        >
+          Open ↗
+        </span>
+      )}
+    </>
+  );
+
+  const baseClass =
+    "group relative block w-full overflow-hidden rounded-[4px] border border-white/10 transition-all duration-500 ease-cinema";
+  const interactiveClass = onClick
+    ? " hover:-translate-y-1 hover:border-white/30"
+    : "";
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        data-cursor="view"
+        data-cursor-label="open"
+        className={baseClass + interactiveClass}
+        style={{ aspectRatio: ratio, background: bg }}
+      >
+        {inner}
+      </button>
+    );
+  }
+  return (
+    <div className={baseClass} style={{ aspectRatio: ratio, background: bg }}>
+      {inner}
     </div>
   );
 }
