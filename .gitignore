@@ -15,3 +15,5 @@ feedback*.docx
 
 # Raw V&V site (250MB local copy used to take screenshots — not the portfolio itself)
 public/vv-site/
+# Raw NexGen practice site (same idea — local source for screenshots only)
+public/nex-site/
