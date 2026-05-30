@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import PageLightbox, { LightboxPage } from "./vv/PageLightbox";
 
@@ -73,35 +73,8 @@ const OUTCOMES: Array<[string, string]> = [
   ["Five Reels live on @beextrart_eyelashes — brand has kept posting in the system since", "Content"],
 ];
 
-const SOCIAL: Array<{ label: string; href: string; kind: "reel" | "highlight" }> = [
-  {
-    label: "Lash drop · Reel 01",
-    href: "https://www.instagram.com/reel/DFUzT1OI_Ys/?igsh=bDhrbmh3MmV3d3l1",
-    kind: "reel",
-  },
-  {
-    label: "Lash drop · Reel 02",
-    href: "https://www.instagram.com/reel/DFm1XG7o2Y2/?igsh=MTdzNXRpNHpldnZueQ==",
-    kind: "reel",
-  },
-  {
-    label: "Lash drop · Reel 03",
-    href: "https://www.instagram.com/reel/DF2aC5VIOyE/?igsh=MWxnNDFxOGU4NDFiZw==",
-    kind: "reel",
-  },
-  {
-    label: "Story highlight",
-    href: "https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MTEzMzk4ODQ2NjEwNzc4?story_media_id=3781730189047238011&igsh=MXZ4bDBqMzRobWJyNA==",
-    kind: "highlight",
-  },
-  {
-    label: "Lash drop · Reel 04",
-    href: "https://www.instagram.com/reel/DR_s-pFAo4A/?igsh=MWg0MTBzb20wZ2JybQ==",
-    kind: "reel",
-  },
-];
 
-// Lightbox catalogue — every asset on the page that should open full-size
+// Lightbox catalogue — every still asset on the page that should open full-size
 const LIGHTBOX_PAGES: LightboxPage[] = [
   { id: "packaging", label: "Limited Edition · box artwork", thumb: "/bee-shots/bee-packaging.jpg", full: "/bee-shots/bee-packaging.jpg" },
   { id: "logo",      label: "Logomark · primary",            thumb: "/bee-shots/bee-logo.jpg",      full: "/bee-shots/bee-logo.jpg" },
@@ -109,7 +82,46 @@ const LIGHTBOX_PAGES: LightboxPage[] = [
   { id: "box-spec",  label: "Box · manufacturer spec sheet",  thumb: "/bee-shots/bee-box-spec.jpg",  full: "/bee-shots/bee-box-spec.jpg" },
   { id: "burgundy",  label: "Burgundy lashes · collab pack",  thumb: "/bee-shots/bee-product-burgundy.jpg", full: "/bee-shots/bee-product-burgundy.jpg" },
   { id: "poster",    label: "Collab leaflet · A5 print",      thumb: "/bee-shots/bee-collab-poster.jpg",    full: "/bee-shots/bee-collab-poster.jpg" },
-  { id: "content",   label: "Social content · Reel still",    thumb: "/bee-shots/bee-content.jpg",   full: "/bee-shots/bee-content.jpg" },
+];
+
+// Real Reels from @beextrart_eyelashes — downloaded and served locally so they
+// play inline without anyone needing to sign in to Instagram. All rights held
+// by Inna as the brand's designer.
+const REELS: Array<{
+  id: string;
+  label: string;
+  src: string;
+  poster: string;
+  ig: string;
+}> = [
+  {
+    id: "reel-1",
+    label: "Burgundy lashes · drop teaser",
+    src: "/bee-shots/bee-reel-1.mp4",
+    poster: "/bee-shots/bee-reel-1-poster.jpg",
+    ig: "https://www.instagram.com/reel/DFUzT1OI_Ys/",
+  },
+  {
+    id: "reel-2",
+    label: "Drop announcement",
+    src: "/bee-shots/bee-reel-2.mp4",
+    poster: "/bee-shots/bee-reel-2-poster.jpg",
+    ig: "https://www.instagram.com/reel/DFm1XG7o2Y2/",
+  },
+  {
+    id: "reel-3",
+    label: "Behind the box",
+    src: "/bee-shots/bee-reel-3.mp4",
+    poster: "/bee-shots/bee-reel-3-poster.jpg",
+    ig: "https://www.instagram.com/reel/DF2aC5VIOyE/",
+  },
+  {
+    id: "reel-4",
+    label: "Editorial · 30s spot",
+    src: "/bee-shots/bee-reel-4.mp4",
+    poster: "/bee-shots/bee-reel-4-poster.jpg",
+    ig: "https://www.instagram.com/reel/DR_s-pFAo4A/",
+  },
 ];
 
 // --- Component ---
@@ -313,10 +325,10 @@ export default function BeextrartCaseStudy() {
                 src="/bee-shots/bee-box-spec.jpg"
                 label="Box · spec sheet"
                 bg="#ffffff"
-                ratio="1400 / 1979"
+                ratio="1800 / 1449"
                 onClick={() => openPanel("box-spec")}
                 contain
-                padInset="3%"
+                padInset="2%"
               />
             </div>
           </div>
@@ -361,79 +373,31 @@ export default function BeextrartCaseStudy() {
           </div>
         </section>
 
-        {/* === Social grid === */}
+        {/* === Social — embedded Reels that play inline === */}
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="mb-8 flex flex-col items-start justify-between gap-3 md:flex-row md:items-baseline">
             <div>
-              <div className="mono opacity-60">04 · Social</div>
+              <div className="mono opacity-60">05 · Social</div>
               <h2 className="display mt-4" style={titleStyle}>Lives on Instagram</h2>
             </div>
-            <p className="max-w-[40ch] text-[14px] leading-[1.55] text-bone-200/75">
-              A small library of Reels + a story highlight set, all of which
-              the brand still uses. Each link opens the actual post.
+            <p className="max-w-[44ch] text-[14px] leading-[1.55] text-bone-200/75">
+              Four Reels from{" "}
+              <a
+                href="https://www.instagram.com/beextrart_eyelashes/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-white/30 underline-offset-4 hover:decoration-white/70"
+              >
+                @beextrart_eyelashes
+              </a>
+              . Click any one to play — they're served from this site so they
+              run without you needing to sign in to Instagram.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-5 md:gap-5">
-            {SOCIAL.map((s, i) => (
-              <a
-                key={i}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cursor="view"
-                data-cursor-label="open"
-                className="group relative block overflow-hidden rounded-[4px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
-                style={{
-                  aspectRatio: "9 / 16",
-                  background:
-                    "linear-gradient(160deg, rgba(255,222,233,0.10), rgba(183,167,255,0.06))",
-                }}
-              >
-                {/* Use the content frame for the first tile to give it an image */}
-                {i === 0 ? (
-                  <img
-                    src="/bee-shots/bee-content.jpg"
-                    alt="BEEXTRART social content"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-5 text-center">
-                    <div
-                      className="display"
-                      style={{
-                        fontSize: 32,
-                        fontWeight: 500,
-                        letterSpacing: "-0.03em",
-                        lineHeight: 0.9,
-                        color: "var(--glow-pink)",
-                      }}
-                    >
-                      {s.kind === "highlight" ? "★" : "▶"}
-                    </div>
-                    <div
-                      className="mt-3 mono"
-                      style={{ fontSize: 10, color: "var(--bone-200)" }}
-                    >
-                      Instagram · {s.kind}
-                    </div>
-                  </div>
-                )}
-                {/* Hover overlay */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 flex items-end justify-between p-4 opacity-100 transition-opacity duration-500"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.85) 100%)",
-                  }}
-                >
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-bone-50">
-                    {s.label}
-                  </span>
-                  <span className="text-[11px] text-bone-50">↗</span>
-                </div>
-              </a>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+            {REELS.map((r) => (
+              <ReelTile key={r.id} reel={r} />
             ))}
           </div>
         </section>
@@ -442,7 +406,7 @@ export default function BeextrartCaseStudy() {
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
-              <div className="mono opacity-60">05 · Reflections</div>
+              <div className="mono opacity-60">06 · Reflections</div>
               <h2 className="display mt-4" style={titleStyle}>What I took from it</h2>
             </div>
             <div className="col-span-12 space-y-10 md:col-span-9">
@@ -460,7 +424,7 @@ export default function BeextrartCaseStudy() {
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
-              <div className="mono opacity-60">06 · Outcome</div>
+              <div className="mono opacity-60">07 · Outcome</div>
               <h2 className="display mt-4" style={titleStyle}>What shipped</h2>
             </div>
             <div className="col-span-12 md:col-span-9">
@@ -629,6 +593,111 @@ function ArtPanel({
   return (
     <div className={baseClass} style={{ aspectRatio: ratio, background: bg }}>
       {inner}
+    </div>
+  );
+}
+
+/**
+ * A 9:16 inline Reel tile. Shows the poster image until first interaction;
+ * on click/hover starts the video (loop, muted, playsinline). Click again
+ * to pause. Tiny IG link at the bottom for the original post.
+ */
+function ReelTile({
+  reel,
+}: {
+  reel: { id: string; label: string; src: string; poster: string; ig: string };
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {});
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  };
+
+  return (
+    <div
+      className="group relative overflow-hidden rounded-[6px] border border-white/10"
+      style={{
+        aspectRatio: "9 / 16",
+        background:
+          "linear-gradient(160deg, rgba(255,222,233,0.10), rgba(183,167,255,0.06))",
+      }}
+    >
+      {/* Click-anywhere on the tile toggles play */}
+      <button
+        type="button"
+        onClick={toggle}
+        data-cursor="hover"
+        data-cursor-label={playing ? "pause" : "play"}
+        aria-label={playing ? `Pause ${reel.label}` : `Play ${reel.label}`}
+        className="absolute inset-0 z-[2] block w-full"
+      >
+        <video
+          ref={videoRef}
+          src={reel.src}
+          poster={reel.poster}
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+
+        {/* Play indicator — fades out once playing */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+          style={{
+            opacity: playing ? 0 : 1,
+            background: "rgba(5,5,5,0.30)",
+          }}
+        >
+          <span
+            className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/45 text-bone-50 backdrop-blur"
+            style={{ fontSize: 18, paddingLeft: 4 }}
+          >
+            ▶
+          </span>
+        </span>
+
+        {/* Bottom label bar */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-3 text-bone-50"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, rgba(5,5,5,0.85) 100%)",
+            fontSize: 10,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+          }}
+        >
+          {reel.label}
+        </span>
+      </button>
+
+      {/* IG link sits ABOVE the play button (z-3) — small chip top-right */}
+      <a
+        href={reel.ig}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cursor="hover"
+        data-cursor-label="instagram"
+        aria-label="Open original on Instagram"
+        className="absolute right-2 top-2 z-[3] rounded-full border border-white/20 bg-black/45 px-2 py-1 text-[9px] uppercase tracking-[0.22em] text-bone-50/90 opacity-0 transition-opacity duration-500 hover:bg-black/65 group-hover:opacity-100"
+        style={{ backdropFilter: "blur(6px)" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        IG ↗
+      </a>
     </div>
   );
 }
