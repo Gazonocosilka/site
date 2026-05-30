@@ -74,13 +74,13 @@ const OUTCOMES: Array<[string, string]> = [
 ];
 
 
-// Lightbox catalogue — every still asset on the page that should open full-size
+// Lightbox catalogue — every still asset that should open full-size
+// (videos are inline players, not lightbox entries)
 const LIGHTBOX_PAGES: LightboxPage[] = [
-  { id: "packaging", label: "Limited Edition · box artwork", thumb: "/bee-shots/bee-packaging.jpg", full: "/bee-shots/bee-packaging.jpg" },
   { id: "logo",      label: "Logomark · primary",            thumb: "/bee-shots/bee-logo.jpg",      full: "/bee-shots/bee-logo.jpg" },
   { id: "wordmark",  label: "Wordmark · leopard variant",     thumb: "/bee-shots/bee-wordmark.jpg",  full: "/bee-shots/bee-wordmark.jpg" },
+  { id: "packaging", label: "Limited Edition · box artwork", thumb: "/bee-shots/bee-packaging.jpg", full: "/bee-shots/bee-packaging.jpg" },
   { id: "box-spec",  label: "Box · manufacturer spec sheet",  thumb: "/bee-shots/bee-box-spec.jpg",  full: "/bee-shots/bee-box-spec.jpg" },
-  { id: "burgundy",  label: "Burgundy lashes · collab pack",  thumb: "/bee-shots/bee-product-burgundy.jpg", full: "/bee-shots/bee-product-burgundy.jpg" },
   { id: "poster",    label: "Collab leaflet · A5 print",      thumb: "/bee-shots/bee-collab-poster.jpg",    full: "/bee-shots/bee-collab-poster.jpg" },
 ];
 
@@ -201,82 +201,119 @@ export default function BeextrartCaseStudy() {
           </div>
         </header>
 
-        {/* === Cover — the packaging illustration, click to view full === */}
+        {/* === Cover — the logo, set on a clean light panel === */}
         <section className="mx-auto mt-16 max-w-[1400px] px-6 md:mt-24 md:px-12">
           <button
             type="button"
-            onClick={() => openPanel("packaging")}
+            onClick={() => openPanel("logo")}
             data-cursor="view"
             data-cursor-label="open"
             className="group relative block w-full overflow-hidden rounded-[6px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
             style={{
               aspectRatio: "16 / 9",
+              background:
+                "radial-gradient(ellipse 80% 70% at 50% 45%, #ffffff 0%, #f6efef 60%, #ecdfe2 100%)",
               boxShadow:
                 "0 30px 100px rgba(0,0,0,0.55), 0 0 80px rgba(255,222,233,0.20)",
             }}
           >
             <img
-              src="/bee-shots/bee-packaging.jpg"
-              alt="BEEXTRART Limited Edition box artwork"
-              className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+              src="/bee-shots/bee-logo.jpg"
+              alt="BEEXTRART logo"
+              className="absolute inset-0 h-full w-full"
+              style={{
+                objectFit: "contain",
+                padding: "6%",
+                mixBlendMode: "multiply",
+              }}
             />
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 flex items-end justify-between p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:p-5"
-              style={{
-                background:
-                  "linear-gradient(180deg, transparent 50%, rgba(5,5,5,0.85) 100%)",
-              }}
             >
-              <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-bone-50">
+              <span
+                className="flex items-center gap-2 rounded-full bg-black/45 px-3 py-1.5 text-[11px] uppercase tracking-[0.28em] text-bone-50"
+                style={{ backdropFilter: "blur(6px)" }}
+              >
                 <span
                   className="block h-1.5 w-1.5 rounded-full"
                   style={{ background: "var(--glow-pink)", boxShadow: "0 0 10px var(--glow-pink)" }}
                 />
-                Limited Edition
+                Logomark · primary
               </span>
-              <span className="text-[11px] uppercase tracking-[0.28em] text-bone-50">
+              <span
+                className="rounded-full bg-black/45 px-3 py-1.5 text-[11px] uppercase tracking-[0.28em] text-bone-50"
+                style={{ backdropFilter: "blur(6px)" }}
+              >
                 Open ↗
               </span>
             </div>
           </button>
           <div className="mt-3 flex items-center justify-between text-bone-200/70" style={{ fontSize: 11 }}>
-            <span className="mono">↓ Click any image to see it full size</span>
+            <span className="mono">↓ Click any asset to view it full size</span>
             <span className="mono">@beextrart_eyelashes</span>
           </div>
         </section>
 
-        {/* === Logo — clean black-on-white panel === */}
-        <section className="mx-auto mt-24 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-32 md:px-12">
+        {/* === "My designs" marker — clearly demarcates where the work begins === */}
+        <section
+          id="designs"
+          className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12"
+        >
+          <div
+            className="grid grid-cols-12 items-end gap-6 border-t border-white/15 pt-10 md:pt-14"
+          >
+            <div className="col-span-12 md:col-span-7">
+              <div className="mono opacity-70" style={{ fontSize: 11, letterSpacing: "0.3em" }}>
+                ↓ My designs · what I made for BEEXTRART
+              </div>
+              <h2
+                className="display mt-5"
+                style={{
+                  fontSize: "clamp(2.4rem, 5.6vw, 4.2rem)",
+                  lineHeight: 1,
+                  fontWeight: 500,
+                  letterSpacing: "-0.035em",
+                  color: "var(--bone-50)",
+                }}
+              >
+                Everything below this line<br />is my work.
+              </h2>
+            </div>
+            <div className="col-span-12 md:col-span-5">
+              <p className="max-w-[46ch] text-[14px] leading-[1.55] text-bone-200/85">
+                Identity, packaging, print and motion. Each piece below has a
+                short caption — what it is, where it lives, and whether it's
+                a still or a video. Click any of them to see the full file.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* === Identity — wordmark + palette (logo is the cover already) === */}
+        <section className="mx-auto mt-16 grid max-w-[1400px] grid-cols-12 gap-6 px-6 md:mt-24 md:px-12">
           <div className="col-span-12 md:col-span-3">
             <div className="mono opacity-60">02 · Identity</div>
-            <h2 className="display mt-4" style={titleStyle}>The logo</h2>
+            <h2 className="display mt-4" style={titleStyle}>Wordmark + palette</h2>
             <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
-              A stylised B that doubles as a feminine silhouette — works
-              at small sizes; wordmark carries the elegance. Leopard
-              variant for the packaging interior.
+              The logomark (above as cover) is the primary mark. Inside the
+              packaging it switches to a leopard-pattern wordmark — the
+              moment customers see when they open the box.
             </p>
           </div>
-          <div className="col-span-12 grid grid-cols-1 gap-5 md:col-span-9 md:grid-cols-3">
-            <ArtPanel
-              src="/bee-shots/bee-logo.jpg"
-              label="Logomark · primary"
-              bg="#f5f5f3"
-              ratio="1 / 1"
-              big
-              onClick={() => openPanel("logo")}
-            />
+          <div className="col-span-12 grid grid-cols-1 gap-5 md:col-span-9 md:grid-cols-2">
             <ArtPanel
               src="/bee-shots/bee-wordmark.jpg"
-              label="Wordmark · leopard"
+              label="Wordmark · leopard variant · still"
               bg="#f5f5f3"
-              ratio="1 / 1"
+              ratio="3 / 2"
               onClick={() => openPanel("wordmark")}
+              padInset="10%"
             />
             <div
               className="relative overflow-hidden rounded-[4px] p-6"
               style={{
-                aspectRatio: "1 / 1",
+                aspectRatio: "3 / 2",
                 background:
                   "linear-gradient(135deg, #ffdee9, #f8a8c4 60%, #d68aae)",
               }}
@@ -298,38 +335,52 @@ export default function BeextrartCaseStudy() {
                 className="absolute bottom-3 right-3 rounded-full border border-black/20 bg-white/70 px-2 py-1 text-[9px] uppercase tracking-[0.22em]"
                 style={{ color: "#3a1226", backdropFilter: "blur(4px)" }}
               >
-                Palette
+                Palette · still
               </span>
             </div>
           </div>
         </section>
 
-        {/* === Packaging — spec sheet, full portrait so the cm dimensions read === */}
-        <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
+        {/* === Packaging — Limited Edition artwork + manufacturer spec === */}
+        <section className="mx-auto mt-24 max-w-[1400px] px-6 md:mt-32 md:px-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
               <div className="mono opacity-60">03 · Packaging</div>
-              <h2 className="display mt-4" style={titleStyle}>For the manufacturer</h2>
+              <h2 className="display mt-4" style={titleStyle}>From artwork to manufacturer</h2>
               <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.55] text-bone-200/80">
-                Acrylic retail box with the leopard wordmark printed on top
-                and clear sides so the product shows through. Specced to the
-                centimetre for the printer — top + the two side panels —
-                with a real-product photo for reference.
+                A Limited Edition box illustration of the brand's customer
+                (the "BEEXTRART girl") on the left, and the manufacturer
+                spec sheet on the right — acrylic retail box, leopard
+                wordmark on top, clear sides, specced to the centimetre.
               </p>
               <p className="mt-3 max-w-[34ch] text-[13px] leading-[1.55] text-bone-200/65">
-                Click the image to view the full spec.
+                Click either image to view full size.
               </p>
             </div>
             <div className="col-span-12 md:col-span-9">
-              <ArtPanel
-                src="/bee-shots/bee-box-spec.jpg"
-                label="Box · spec sheet"
-                bg="#ffffff"
-                ratio="1800 / 1449"
-                onClick={() => openPanel("box-spec")}
-                contain
-                padInset="2%"
-              />
+              <div className="grid grid-cols-12 gap-5">
+                <div className="col-span-12 md:col-span-5">
+                  <ArtPanel
+                    src="/bee-shots/bee-packaging.jpg"
+                    label="Limited Edition · box artwork · still"
+                    bg="#1d0a14"
+                    ratio="3 / 4"
+                    cover
+                    onClick={() => openPanel("packaging")}
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-7">
+                  <ArtPanel
+                    src="/bee-shots/bee-box-spec.jpg"
+                    label="Box · manufacturer spec · still"
+                    bg="#ffffff"
+                    ratio="1800 / 1449"
+                    onClick={() => openPanel("box-spec")}
+                    contain
+                    padInset="2%"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -349,19 +400,17 @@ export default function BeextrartCaseStudy() {
             <div className="col-span-12 md:col-span-9">
               <div className="grid grid-cols-12 gap-5">
                 <div className="col-span-12 md:col-span-7">
-                  <ArtPanel
-                    src="/bee-shots/bee-product-burgundy.jpg"
-                    label="Burgundy lashes · collab pack"
-                    bg="#1a0608"
+                  <VideoPanel
+                    src="/bee-shots/bee-burgundy.mp4"
+                    poster="/bee-shots/bee-product-burgundy.jpg"
+                    label="Burgundy lashes · collab pack · video"
                     ratio="3 / 4"
-                    cover
-                    onClick={() => openPanel("burgundy")}
                   />
                 </div>
                 <div className="col-span-12 md:col-span-5">
                   <ArtPanel
                     src="/bee-shots/bee-collab-poster.jpg"
-                    label="Collab leaflet · A5"
+                    label="Collab leaflet · A5 · still"
                     bg="#0e0405"
                     ratio="3 / 4"
                     cover
@@ -594,6 +643,84 @@ function ArtPanel({
     <div className={baseClass} style={{ aspectRatio: ratio, background: bg }}>
       {inner}
     </div>
+  );
+}
+
+/**
+ * Inline product video panel (used in the Print section for the burgundy
+ * lashes shot). Same click-to-play behaviour as ReelTile but with a
+ * configurable aspect ratio so it fits alongside still-image panels.
+ */
+function VideoPanel({
+  src,
+  poster,
+  label,
+  ratio,
+}: {
+  src: string;
+  poster: string;
+  label: string;
+  ratio: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {});
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      data-cursor="hover"
+      data-cursor-label={playing ? "pause" : "play"}
+      aria-label={playing ? `Pause ${label}` : `Play ${label}`}
+      className="group relative block w-full overflow-hidden rounded-[4px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
+      style={{ aspectRatio: ratio, background: "#0e0405" }}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      {/* Play indicator */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+        style={{
+          opacity: playing ? 0 : 1,
+          background: "rgba(5,5,5,0.25)",
+        }}
+      >
+        <span
+          className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-black/45 text-bone-50 backdrop-blur"
+          style={{ fontSize: 20, paddingLeft: 5 }}
+        >
+          ▶
+        </span>
+      </span>
+      {/* Bottom label */}
+      <span
+        className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-[9px] uppercase tracking-[0.22em] text-bone-50"
+        style={{ backdropFilter: "blur(4px)" }}
+      >
+        {label}
+      </span>
+    </button>
   );
 }
 
