@@ -201,57 +201,62 @@ export default function BeextrartCaseStudy() {
           </div>
         </header>
 
-        {/* === Cover — the logo, set on a clean light panel === */}
+        {/* === Cover — small centered logo card === */}
         <section className="mx-auto mt-16 max-w-[1400px] px-6 md:mt-24 md:px-12">
-          <button
-            type="button"
-            onClick={() => openPanel("logo")}
-            data-cursor="view"
-            data-cursor-label="open"
-            className="group relative block w-full overflow-hidden rounded-[6px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
-            style={{
-              aspectRatio: "16 / 9",
-              background:
-                "radial-gradient(ellipse 80% 70% at 50% 45%, #ffffff 0%, #f6efef 60%, #ecdfe2 100%)",
-              boxShadow:
-                "0 30px 100px rgba(0,0,0,0.55), 0 0 80px rgba(255,222,233,0.20)",
-            }}
-          >
-            <img
-              src="/bee-shots/bee-logo.jpg"
-              alt="BEEXTRART logo"
-              className="absolute inset-0 h-full w-full"
+          <div className="mx-auto w-full" style={{ maxWidth: 460 }}>
+            <button
+              type="button"
+              onClick={() => openPanel("logo")}
+              data-cursor="view"
+              data-cursor-label="open"
+              className="group relative block w-full overflow-hidden rounded-[6px] border border-white/10 transition-all duration-500 ease-cinema hover:-translate-y-1 hover:border-white/30"
               style={{
-                objectFit: "contain",
-                padding: "6%",
-                mixBlendMode: "multiply",
+                aspectRatio: "4 / 5",
+                background:
+                  "radial-gradient(ellipse 80% 70% at 50% 45%, #ffffff 0%, #f6efef 60%, #ecdfe2 100%)",
+                boxShadow:
+                  "0 30px 100px rgba(0,0,0,0.55), 0 0 80px rgba(255,222,233,0.20)",
               }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 flex items-end justify-between p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:p-5"
             >
-              <span
-                className="flex items-center gap-2 rounded-full bg-black/45 px-3 py-1.5 text-[11px] uppercase tracking-[0.28em] text-bone-50"
-                style={{ backdropFilter: "blur(6px)" }}
+              <img
+                src="/bee-shots/bee-logo.jpg"
+                alt="BEEXTRART logo"
+                className="absolute inset-0 h-full w-full"
+                style={{
+                  objectFit: "contain",
+                  padding: "8%",
+                  mixBlendMode: "multiply",
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 flex items-end justify-between p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               >
                 <span
-                  className="block h-1.5 w-1.5 rounded-full"
-                  style={{ background: "var(--glow-pink)", boxShadow: "0 0 10px var(--glow-pink)" }}
-                />
-                Logomark · primary
-              </span>
-              <span
-                className="rounded-full bg-black/45 px-3 py-1.5 text-[11px] uppercase tracking-[0.28em] text-bone-50"
-                style={{ backdropFilter: "blur(6px)" }}
-              >
-                Open ↗
-              </span>
+                  className="flex items-center gap-2 rounded-full bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.26em] text-bone-50"
+                  style={{ backdropFilter: "blur(6px)" }}
+                >
+                  <span
+                    className="block h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--glow-pink)", boxShadow: "0 0 10px var(--glow-pink)" }}
+                  />
+                  Logomark · primary
+                </span>
+                <span
+                  className="rounded-full bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.26em] text-bone-50"
+                  style={{ backdropFilter: "blur(6px)" }}
+                >
+                  Open ↗
+                </span>
+              </div>
+            </button>
+            <div
+              className="mt-3 flex items-center justify-between text-bone-200/70"
+              style={{ fontSize: 10 }}
+            >
+              <span className="mono">↓ Click any asset to view full size</span>
+              <span className="mono">@beextrart_eyelashes</span>
             </div>
-          </button>
-          <div className="mt-3 flex items-center justify-between text-bone-200/70" style={{ fontSize: 11 }}>
-            <span className="mono">↓ Click any asset to view it full size</span>
-            <span className="mono">@beextrart_eyelashes</span>
           </div>
         </section>
 
@@ -373,9 +378,8 @@ export default function BeextrartCaseStudy() {
                   label="Box · manufacturer spec · still"
                   bg="#ffffff"
                   ratio="1 / 1"
+                  cover
                   onClick={() => openPanel("box-spec")}
-                  contain
-                  padInset="1%"
                 />
               </div>
             </div>
@@ -420,8 +424,8 @@ export default function BeextrartCaseStudy() {
         <section className="mx-auto mt-32 max-w-[1400px] px-6 md:mt-44 md:px-12">
           <div className="mb-8 flex flex-col items-start justify-between gap-3 md:flex-row md:items-baseline">
             <div>
-              <div className="mono opacity-60">05 · Branding design</div>
-              <h2 className="display mt-4" style={titleStyle}>Branding design:</h2>
+              <div className="mono opacity-60">05 · Product design</div>
+              <h2 className="display mt-4" style={titleStyle}>Product design:</h2>
               <p className="mt-3 text-[13px] uppercase tracking-[0.28em] text-bone-200/65">
                 Live on Instagram
               </p>
