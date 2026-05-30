@@ -18,6 +18,7 @@ const BRIEF = {
 const CHALLENGE = [
   "After a few months of doing brand and UI, I wanted to know I could actually ship a working website on my own — not a Figma mockup. So I made NexGen: a fictional design agency, single landing page, all of the trimmings.",
   "The brief I gave myself: don't reach for a template, don't pull in a framework, just write the HTML / CSS / JS. The one indulgence I allowed was a custom interaction I'd been wanting to try — a soft cursor blob.",
+  "Quick note on the assets: the project tiles in the “Selected Projects” section (the Fintech dashboard, the e-comm, the health app, the SaaS chart) are AI-generated placeholder images. I used them to see how the gallery would look once filled — for a real client I'd swap them for actual case-study screenshots.",
 ];
 
 const PROCESS = [
