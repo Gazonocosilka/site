@@ -1,21 +1,24 @@
 "use client";
 
 import ProjectCase from "./ProjectCase";
+import BeextrartPreview from "./previews/BeextrartPreview";
 
 export default function Beextrart() {
   return (
     <ProjectCase
       index="02"
-      genre="Beauty · Liquid Chrome"
+      genre="Client · Beauty"
       title="BEEXTRART"
-      description="A futuristic beauty system for a bold lash brand — translating high-shine product surfaces into a glossy, campaign-driven digital experience. Liquid chrome backgrounds, holographic micro-labels and a soft pink accent thread the visual story together."
+      description="Brand identity, packaging and print for an eyelashes label working out of Ukraine. Logo system, limited-edition box artwork, retail boxes, a collab leaflet with KARDIT STYLE and a small library of social content the brand still uses on Instagram and TikTok."
       meta={[
         ["Year", "2025"],
-        ["Role", "Brand · Direction"],
-        ["Sector", "Beauty"],
+        ["Role", "Brand · Packaging · Print"],
+        ["Type", "Client"],
       ]}
-      asset="bee-preview"
+      href="/work/beextrart"
+      asset="bee-home"
       accent="pink"
+      preview={<BeextrartPreview />}
     />
   );
 }
