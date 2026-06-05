@@ -1,49 +1,62 @@
 #!/bin/bash
-# Double-click this file to open the website locally.
-# - Builds the static site if needed (./out)
-# - Starts a tiny local HTTP server on port 8765
-# - Opens your default browser to it
-# Close the Terminal window when you're done.
+# Double-click this file to open the portfolio locally.
+# - Starts the Next.js dev server (always serves the latest code)
+# - Opens your default browser to http://localhost:3000
+# Close this Terminal window when you're done viewing.
 
 set -e
 
-# cd to the folder this script lives in
+# cd to the folder this script lives in (the site repo root)
 cd "$(dirname "$0")"
 
-# Make sure Node is on PATH (this machine's install lives in ~/.local/node)
+# Make sure Node is on PATH. The installation on this Mac lives here:
 export PATH="$HOME/.local/node/bin:$PATH"
 
-PORT=8765
-SITE_DIR="$(pwd)/out"
+# Sanity-check node is reachable; if not, point the user at what's wrong.
+if ! command -v node >/dev/null 2>&1; then
+  echo "❌  Node isn't available on PATH."
+  echo "   Expected to find it at ~/.local/node/bin/node"
+  echo "   Install Node 18+ and re-run this file."
+  echo ""
+  echo "Press any key to close this window."
+  read -n 1 -s -r
+  exit 1
+fi
 
-# Build the static site if the out/ folder is missing
-if [ ! -f "$SITE_DIR/index.html" ]; then
-  echo "→ First time setup: building the static site (this takes a few seconds)..."
+PORT=3000
+URL="http://localhost:$PORT"
+
+# Install deps the first time only (node_modules missing)
+if [ ! -d node_modules ]; then
+  echo "→ First-time setup — installing packages (about 30s)..."
   npm install --no-audit --no-fund
-  npm run build
-  echo "✓ Built. Saved to $SITE_DIR"
+  echo "✓ Packages installed."
   echo ""
 fi
 
-# Free the port if something's already on it
+# Free the port if anything's already listening on it
 EXISTING="$(lsof -ti tcp:$PORT 2>/dev/null || true)"
 if [ -n "$EXISTING" ]; then
-  echo "→ Port $PORT is in use, freeing it..."
+  echo "→ Port $PORT is busy — freeing it..."
   kill $EXISTING 2>/dev/null || true
-  sleep 0.5
+  sleep 0.6
 fi
 
-URL="http://localhost:$PORT"
-echo "→ Starting local server at $URL"
-echo "→ Opening browser..."
 echo ""
-echo "Leave this Terminal window open while you view the site."
-echo "Close this window to stop the server."
+echo "┌──────────────────────────────────────────────────────────┐"
+echo "│  Starting Inna Portfolio · dev server                    │"
+echo "│  $URL                                  │"
+echo "│                                                          │"
+echo "│  • Browser will open automatically in a moment.          │"
+echo "│  • Leave this window open while you're viewing the site. │"
+echo "│  • Close it (or Ctrl-C) to stop the server.              │"
+echo "└──────────────────────────────────────────────────────────┘"
 echo ""
 
-# Open the browser shortly after the server starts
-( sleep 1 && open "$URL" ) &
+# Open the browser shortly after the server starts compiling.
+# Next.js prints "✓ Ready in …" within a couple of seconds.
+( sleep 3 && open "$URL" ) &
 
-# Serve the static export folder — block here until user closes the terminal
-cd "$SITE_DIR"
-python3 -m http.server "$PORT"
+# Start the dev server in the foreground — keeps the window alive,
+# shows logs, terminates cleanly on Ctrl-C / window close.
+exec npm run dev
