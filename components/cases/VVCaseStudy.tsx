@@ -5,6 +5,7 @@ import Link from "next/link";
 import VVStoryboard from "./vv/VVStoryboard";
 import { VVTypeSystem, VVPalette } from "./vv/VVMocks";
 import PageLightbox, { LightboxPage } from "./vv/PageLightbox";
+import DiscardedDirections from "./DiscardedDirections";
 
 // --- Content ---
 
@@ -305,6 +306,26 @@ export default function VVCaseStudy() {
             </div>
           </div>
         </section>
+
+        {/* === Discarded directions === */}
+        <DiscardedDirections
+          index="07"
+          intro="Two visual directions I explored before the one that shipped. Both made sense on paper. Neither survived the founders looking at them for five minutes."
+          directions={[
+            {
+              index: "Direction A",
+              kind: "vv-maximalist",
+              title: "Maximalist colour, sale-first homepage",
+              killedBecause: "Too loud for a boutique that sells calm. V&V drops one carefully chosen capsule at a time — the site needed to feel that quiet too.",
+            },
+            {
+              index: "Direction B",
+              kind: "vv-heritage",
+              title: "Heritage serif, sepia apothecary",
+              killedBecause: "Aged the brand twenty years. The actual customer is in her late 20s — old-world cues started reading like 'her mother's wardrobe'.",
+            },
+          ]}
+        />
 
         {/* === Outro === */}
         <section className="mx-auto mt-32 flex max-w-[1400px] flex-col items-start justify-between gap-10 border-t border-white/10 px-6 py-16 md:mt-44 md:flex-row md:items-center md:px-12 md:py-20">

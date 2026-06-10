@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import PageLightbox, { LightboxPage } from "./vv/PageLightbox";
+import DiscardedDirections from "./DiscardedDirections";
 
 // --- Content ---
 
@@ -489,6 +490,27 @@ export default function BeextrartCaseStudy() {
             </div>
           </div>
         </section>
+
+        {/* === Discarded directions === */}
+        <DiscardedDirections
+          index="08"
+          intro="Before we landed on the burgundy + black + pink system, I pitched two other worlds. Both got polite nods and a firm no — which is exactly what good clients should do."
+          directions={[
+            {
+              index: "Direction A",
+              kind: "bee-pharmacy",
+              title: "Clinical pharmacy / lab-grade",
+              killedBecause: "Stripped out the warmth. People buy lashes because they want to feel a little glamorous — not like they're filling a prescription.",
+            },
+            {
+              index: "Direction B",
+              kind: "bee-cottagecore",
+              title: "Cottagecore, hand-script, 'little hive'",
+              killedBecause: "Undermined the premium price point. The packaging is meant to feel like a gift — hand-drawn cues priced it like a farmer's-market jam jar.",
+            },
+          ]}
+          accent="#FFDEE9"
+        />
 
         {/* === Outro === */}
         <section className="mx-auto mt-32 flex max-w-[1400px] flex-col items-start justify-between gap-10 border-t border-white/10 px-6 py-16 md:mt-44 md:flex-row md:items-center md:px-12 md:py-20">
