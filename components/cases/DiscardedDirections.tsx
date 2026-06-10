@@ -18,8 +18,7 @@ export type DiscardedMockKind =
   | "vv-maximalist"   // High-sat gradient + huge sale banner — fast-fashion energy
   | "vv-heritage"     // Sepia / old-world apothecary serif
   // BEEXTRART kills
-  | "bee-pharmacy"    // Clinical white grid, sans, sterile
-  | "bee-cottagecore"; // Hand-drawn rustic, warm cream, "honey & home"
+  | "bee-honey-logo"; // Honey-bee logo direction — the "name has BEE in it" trap
 
 export interface DiscardedDirection {
   index: string;        // "Direction A" / "Direction B"
@@ -32,7 +31,8 @@ interface Props {
   index: string;                 // "07" — section number in the case study
   eyebrow?: string;              // defaults to "Discarded directions"
   intro: string;                 // one paragraph framing the section
-  directions: [DiscardedDirection, DiscardedDirection];
+  /** 1–2 directions. A single direction renders as a wider single card. */
+  directions: DiscardedDirection[];
   accent?: string;               // CSS color for the section accent
 }
 
@@ -67,9 +67,16 @@ export default function DiscardedDirections({
         </div>
 
         <div className="col-span-12 md:col-span-9">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div
+            className={`grid grid-cols-1 gap-6 ${directions.length > 1 ? "md:grid-cols-2" : ""}`}
+          >
             {directions.map((d) => (
-              <DirectionCard key={d.index} direction={d} accent={accent} />
+              <DirectionCard
+                key={d.index}
+                direction={d}
+                accent={accent}
+                wide={directions.length === 1}
+              />
             ))}
           </div>
         </div>
@@ -83,16 +90,18 @@ export default function DiscardedDirections({
 function DirectionCard({
   direction,
   accent,
+  wide = false,
 }: {
   direction: DiscardedDirection;
   accent: string;
+  wide?: boolean;
 }) {
   return (
     <figure className="group relative flex flex-col">
       {/* Mock surface */}
       <div
         className="relative overflow-hidden rounded-md border border-dashed border-white/20"
-        style={{ aspectRatio: "4 / 3" }}
+        style={{ aspectRatio: wide ? "16 / 9" : "4 / 3" }}
       >
         <DiscardedMock kind={direction.kind} />
 
@@ -191,8 +200,7 @@ function DirectionCard({
 function DiscardedMock({ kind }: { kind: DiscardedMockKind }) {
   if (kind === "vv-maximalist") return <VVMaximalistMock />;
   if (kind === "vv-heritage") return <VVHeritageMock />;
-  if (kind === "bee-pharmacy") return <BeePharmacyMock />;
-  if (kind === "bee-cottagecore") return <BeeCottagecoreMock />;
+  if (kind === "bee-honey-logo") return <BeeHoneyLogoMock />;
   return null;
 }
 
@@ -342,215 +350,144 @@ function VVHeritageMock() {
   );
 }
 
-/* ── BEEXTRART — Direction A: Clinical pharmacy
-   Stark white, blister-pack grid, monospaced dosage chips. */
-function BeePharmacyMock() {
+/* ── BEEXTRART — Direction A: Honey-bee wordmark
+   Brand-deck artboard. Honey-yellow accent on "BEE", bee mark, honeycomb
+   pattern, small designer annotations. The "name has BEE in it" trap. */
+function BeeHoneyLogoMock() {
   return (
     <div
       className="absolute inset-0 flex flex-col"
       style={{
-        background: "#F4F5F7",
+        background:
+          "radial-gradient(ellipse 90% 80% at 50% 50%, #1d1a14 0%, #0e0d0a 100%)",
         fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        color: "#1A1F2C",
+        color: "#F1E4C6",
       }}
     >
-      {/* Top bar */}
-      <div className="flex items-center justify-between border-b border-[#1A1F2C]/15 px-4 py-2">
-        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.22em" }}>
-          BEEXTRART<sup style={{ fontSize: 6 }}>™</sup>
+      {/* Honeycomb pattern — very subtle */}
+      <svg
+        aria-hidden
+        className="absolute inset-0 h-full w-full"
+        preserveAspectRatio="xMidYMid slice"
+        viewBox="0 0 320 180"
+      >
+        <defs>
+          <pattern id="hex" width="20" height="17.32" patternUnits="userSpaceOnUse" patternTransform="translate(0,0)">
+            <polygon
+              points="10,1 18.66,5.66 18.66,14.66 10,19.32 1.34,14.66 1.34,5.66"
+              fill="none"
+              stroke="#E8B84B"
+              strokeWidth="0.3"
+              opacity="0.15"
+            />
+          </pattern>
+        </defs>
+        <rect width="320" height="180" fill="url(#hex)" />
+      </svg>
+
+      {/* Top mono label — designer's working file caption */}
+      <div className="relative flex items-center justify-between px-5 pt-4">
+        <span
+          className="font-mono"
+          style={{ fontSize: 7, letterSpacing: "0.28em", color: "#E8B84B", opacity: 0.85 }}
+        >
+          LOGO STUDY · WORDMARK 02
         </span>
         <span
           className="font-mono"
-          style={{ fontSize: 7, letterSpacing: "0.18em", opacity: 0.7 }}
+          style={{ fontSize: 7, letterSpacing: "0.22em", opacity: 0.45 }}
         >
-          REG · 0042/24 · EU
+          BEEXTRART · BRAND DECK · 03 / 12
         </span>
       </div>
 
-      {/* Product card */}
-      <div className="flex flex-1 items-center justify-center px-5">
-        <div className="flex w-full items-center gap-4">
-          {/* Bottle silhouette */}
-          <div className="flex flex-col items-center">
-            <div
-              style={{
-                width: 36,
-                height: 64,
-                background:
-                  "linear-gradient(180deg, #DCE2EC 0%, #B7C0CE 100%)",
-                borderRadius: "6px 6px 3px 3px",
-                position: "relative",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: 6,
-                  left: 4,
-                  right: 4,
-                  bottom: 18,
-                  background: "#FFFFFF",
-                  border: "0.5px solid #1A1F2C",
-                  fontSize: 5,
-                  letterSpacing: "0.18em",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  padding: 2,
-                }}
-              >
-                <span style={{ fontWeight: 800 }}>BEE</span>
-                <span style={{ marginTop: 1, opacity: 0.65 }}>SERUM 30ML</span>
-              </div>
-            </div>
-          </div>
-          {/* Spec list */}
-          <div className="flex flex-1 flex-col gap-1.5">
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                lineHeight: 1.1,
-              }}
-            >
-              Lash &amp; Brow Serum
-            </div>
-            <div
-              className="font-mono"
-              style={{ fontSize: 7, letterSpacing: "0.2em", opacity: 0.7 }}
-            >
-              ACTIVE · BIOTIN 5% · KERATIN
-            </div>
-            <div className="mt-1 flex flex-wrap gap-1">
-              {["DERMA-TESTED", "VEGAN", "0% PARABEN"].map((t) => (
-                <span
-                  key={t}
-                  className="font-mono"
-                  style={{
-                    fontSize: 6,
-                    letterSpacing: "0.18em",
-                    background: "#FFFFFF",
-                    border: "0.5px solid #1A1F2C",
-                    padding: "1.5px 4px",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div
-              className="mt-2 inline-block self-start border border-[#1A1F2C] px-3 py-1"
-              style={{ fontSize: 8, fontWeight: 700, letterSpacing: "0.2em" }}
-            >
-              ADD TO BASKET — £24
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer band */}
-      <div
-        className="flex items-center justify-between border-t border-[#1A1F2C]/15 px-4 py-1.5 font-mono"
-        style={{ fontSize: 6, letterSpacing: "0.2em", opacity: 0.6 }}
-      >
-        <span>BATCH 240612</span>
-        <span>USE BY 06/26</span>
-        <span>STORE COOL · DRY</span>
-      </div>
-    </div>
-  );
-}
-
-/* ── BEEXTRART — Direction B: Cottagecore / hand-drawn
-   Warm cream, woodcut bee, hand-script lockup. */
-function BeeCottagecoreMock() {
-  return (
-    <div
-      className="absolute inset-0 flex flex-col items-center justify-center"
-      style={{
-        background:
-          "radial-gradient(ellipse 100% 100% at 50% 40%, #FFF1CE 0%, #F0DDA6 70%, #D9BE73 100%)",
-        fontFamily: "'Brush Script MT', 'Snell Roundhand', cursive",
-        color: "#5A3E16",
-      }}
-    >
-      {/* Tiny dot pattern */}
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(90,62,22,0.18) 0.6px, transparent 0.7px)",
-          backgroundSize: "8px 8px",
-          opacity: 0.6,
-        }}
-      />
-
-      <div className="relative flex flex-col items-center gap-1 px-5 text-center">
-        {/* Woodcut bee */}
-        <svg width="44" height="44" viewBox="0 0 44 44">
-          <ellipse cx="22" cy="24" rx="11" ry="7" fill="#5A3E16" />
-          <ellipse cx="22" cy="24" rx="11" ry="7" fill="none" stroke="#FFF1CE" strokeWidth="0.5" strokeDasharray="2 2" />
-          <ellipse cx="14" cy="18" rx="6" ry="3.5" fill="#FFF1CE" opacity="0.85" />
-          <ellipse cx="30" cy="18" rx="6" ry="3.5" fill="#FFF1CE" opacity="0.85" />
-          <circle cx="22" cy="16" r="3" fill="#5A3E16" />
-          <line x1="18" y1="13" x2="14" y2="9" stroke="#5A3E16" strokeWidth="0.7" />
-          <line x1="26" y1="13" x2="30" y2="9" stroke="#5A3E16" strokeWidth="0.7" />
+      {/* Centered wordmark */}
+      <div className="relative flex flex-1 flex-col items-center justify-center px-5">
+        {/* Bee mark above wordmark */}
+        <svg width="46" height="34" viewBox="0 0 46 34" className="mb-3">
+          {/* Wings */}
+          <ellipse cx="15" cy="11" rx="9" ry="5.5" fill="#F1E4C6" opacity="0.85" />
+          <ellipse cx="31" cy="11" rx="9" ry="5.5" fill="#F1E4C6" opacity="0.85" />
+          {/* Body */}
+          <ellipse cx="23" cy="19" rx="11" ry="7.5" fill="#E8B84B" />
+          {/* Stripes */}
+          <rect x="17" y="13" width="2.4" height="13" rx="1" fill="#1d1a14" transform="rotate(-8 18.2 19)" />
+          <rect x="27" y="13" width="2.4" height="13" rx="1" fill="#1d1a14" transform="rotate(8 28.2 19)" />
+          {/* Antennae */}
+          <line x1="19" y1="11" x2="16" y2="4" stroke="#F1E4C6" strokeWidth="1.1" strokeLinecap="round" />
+          <line x1="27" y1="11" x2="30" y2="4" stroke="#F1E4C6" strokeWidth="1.1" strokeLinecap="round" />
+          <circle cx="16" cy="3.5" r="1.2" fill="#F1E4C6" />
+          <circle cx="30" cy="3.5" r="1.2" fill="#F1E4C6" />
         </svg>
 
-        {/* Script wordmark */}
-        <span
+        {/* Wordmark with BEE highlighted */}
+        <div
+          className="flex items-baseline"
           style={{
-            fontSize: 32,
-            fontWeight: 400,
-            lineHeight: 1,
-            letterSpacing: "0.01em",
-            transform: "rotate(-3deg)",
+            fontWeight: 900,
+            letterSpacing: "-0.04em",
+            lineHeight: 0.9,
+            fontSize: "clamp(2.4rem, 6vw, 4.8rem)",
           }}
         >
-          Beextrart
-        </span>
+          <span style={{ color: "#E8B84B", textShadow: "0 0 24px rgba(232,184,75,0.45)" }}>
+            BEE
+          </span>
+          <span style={{ color: "#F1E4C6" }}>XTRART</span>
+        </div>
+
+        {/* Tagline */}
         <span
+          className="mt-3"
           style={{
             fontSize: 9,
-            fontFamily: "Georgia, serif",
-            fontStyle: "italic",
-            letterSpacing: "0.18em",
-            marginTop: 2,
+            letterSpacing: "0.42em",
+            opacity: 0.55,
+            fontWeight: 500,
           }}
         >
-          honey ~ home ~ handmade
+          STRAIGHT&nbsp;FROM&nbsp;THE&nbsp;HIVE
         </span>
 
-        {/* Ribbon */}
-        <div
-          className="mt-3 px-4 py-1"
-          style={{
-            background: "#5A3E16",
-            color: "#FFF1CE",
-            fontFamily: "Georgia, serif",
-            fontSize: 7,
-            letterSpacing: "0.32em",
-            fontWeight: 700,
-          }}
-        >
-          — FROM OUR LITTLE HIVE —
+        {/* Honeycomb row — supporting graphic */}
+        <div className="mt-5 flex items-center gap-1.5">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <svg key={i} width="14" height="16" viewBox="0 0 20 19.32">
+              <polygon
+                points="10,1 18.66,5.66 18.66,14.66 10,19.32 1.34,14.66 1.34,5.66"
+                fill={i === 3 ? "#E8B84B" : "none"}
+                stroke="#E8B84B"
+                strokeWidth="0.6"
+                opacity={i === 3 ? 0.9 : 0.4}
+              />
+            </svg>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom — designer annotation */}
+      <div className="relative flex items-center justify-between px-5 pb-3">
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="block h-1 w-1 rounded-full"
+            style={{ background: "#E8B84B", boxShadow: "0 0 6px #E8B84B" }}
+          />
+          <span
+            className="font-mono"
+            style={{ fontSize: 7, letterSpacing: "0.22em", opacity: 0.55 }}
+          >
+            HONEY YELLOW · #E8B84B
+          </span>
         </div>
         <span
-          style={{
-            fontFamily: "Georgia, serif",
-            fontStyle: "italic",
-            fontSize: 8,
-            opacity: 0.7,
-            marginTop: 4,
-          }}
+          className="font-mono italic"
+          style={{ fontSize: 7, letterSpacing: "0.18em", opacity: 0.4 }}
         >
-          made with love in a small kitchen
+          ↳ note: bee motif reads &quot;jam jar&quot;
         </span>
       </div>
     </div>
   );
 }
+

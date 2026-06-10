@@ -491,22 +491,16 @@ export default function BeextrartCaseStudy() {
           </div>
         </section>
 
-        {/* === Discarded directions === */}
+        {/* === Discarded direction === */}
         <DiscardedDirections
           index="08"
-          intro="Before we landed on the burgundy + black + pink system, I pitched two other worlds. Both got polite nods and a firm no — which is exactly what good clients should do."
+          intro="The name has BEE in it, so of course the first logo leaned all the way into it — honey-yellow accent, bee mark, honeycomb pattern, the lot. The founder looked at the first round and said, kindly: 'people will think we sell honey.' She was right. We binned this one the same afternoon."
           directions={[
             {
               index: "Direction A",
-              kind: "bee-pharmacy",
-              title: "Clinical pharmacy / lab-grade",
-              killedBecause: "Stripped out the warmth. People buy lashes because they want to feel a little glamorous — not like they're filling a prescription.",
-            },
-            {
-              index: "Direction B",
-              kind: "bee-cottagecore",
-              title: "Cottagecore, hand-script, 'little hive'",
-              killedBecause: "Undermined the premium price point. The packaging is meant to feel like a gift — hand-drawn cues priced it like a farmer's-market jam jar.",
+              kind: "bee-honey-logo",
+              title: "Honey-bee wordmark",
+              killedBecause: "Beautiful in isolation, off-brand on a box. Lashes are the product — the moment a bee landed on the packaging, the whole thing started reading like a jar of honey instead of a beauty SKU.",
             },
           ]}
           accent="#FFDEE9"
