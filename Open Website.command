@@ -1,6 +1,7 @@
 #!/bin/bash
 # Double-click this file to open the portfolio locally.
-# - Starts the Next.js dev server (always serves the latest code)
+# - Pulls the latest version from GitHub (so you always see the newest site)
+# - Starts the Next.js dev server
 # - Opens your default browser to http://localhost:3000
 # Close this Terminal window when you're done viewing.
 
@@ -26,9 +27,32 @@ fi
 PORT=3000
 URL="http://localhost:$PORT"
 
-# Install deps the first time only (node_modules missing)
+# Pull the latest version from GitHub so you always see the newest site.
+# Fails gracefully — if you're offline, or git fails for any reason, we
+# just keep the local copy and carry on. Uses --ff-only so a local
+# change can never get clobbered without you noticing.
+if command -v git >/dev/null 2>&1 && [ -d .git ]; then
+  echo "→ Checking for updates from GitHub..."
+  if git pull --ff-only --quiet 2>/dev/null; then
+    echo "✓ Up to date."
+  else
+    echo "⚠  Couldn't pull updates (offline, or you have local changes)."
+    echo "   Running the version already on disk."
+  fi
+  echo ""
+fi
+
+# Install deps the first time, OR if package.json was updated by the pull.
+# (`-nt` = "newer than" — true if package.json was modified more recently
+# than node_modules, which means a pull likely added/changed dependencies.)
+NEED_INSTALL=0
 if [ ! -d node_modules ]; then
-  echo "→ First-time setup — installing packages (about 30s)..."
+  NEED_INSTALL=1
+elif [ package.json -nt node_modules ]; then
+  NEED_INSTALL=1
+fi
+if [ "$NEED_INSTALL" = "1" ]; then
+  echo "→ Installing packages (about 30s)..."
   npm install --no-audit --no-fund
   echo "✓ Packages installed."
   echo ""
