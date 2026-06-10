@@ -164,18 +164,33 @@ export default function ProjectsRail() {
         </div>
       </div>
 
-      {/* Sticky clickable side index */}
-      <div className="pointer-events-none fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 md:block">
-        <nav className="flex flex-col gap-2 pointer-events-auto" aria-label="Project navigation">
+      {/* Sticky clickable side index — sits on the RIGHT, just under the
+          ScrollProgress chapter rail so all the indicators live in one column.
+          Right-aligned to match the chapter rail's text alignment. */}
+      <div
+        className="pointer-events-none fixed right-5 z-40 hidden md:block"
+        style={{ top: "calc(50% + 110px)" }}
+      >
+        <div className="mb-3 ml-auto h-px w-12 bg-white/12" aria-hidden />
+        <nav
+          className="pointer-events-auto flex flex-col items-end gap-2"
+          aria-label="Project navigation"
+        >
           {PROJECTS.map((p, i) => (
             <button
               key={p.id}
               onClick={() => goTo(i)}
               data-cursor="hover"
               data-cursor-label="jump"
-              className="group flex items-center gap-3 py-1 text-left transition-opacity duration-500 ease-cinema"
+              className="group flex items-center gap-3 py-1 text-right transition-opacity duration-500 ease-cinema"
               style={{ opacity: i === active ? 1 : 0.45 }}
             >
+              <span
+                className="mono whitespace-nowrap transition-all duration-500 group-hover:tracking-[0.32em] group-hover:text-bone-50"
+                style={{ color: i === active ? "var(--bone-50)" : "var(--bone-200)" }}
+              >
+                0{i + 1} · {p.title}
+              </span>
               <span
                 className="block h-px transition-all duration-700 ease-cinema group-hover:!w-[44px]"
                 style={{
@@ -183,12 +198,6 @@ export default function ProjectsRail() {
                   background: i === active ? "var(--accent)" : "rgba(255,255,255,0.4)",
                 }}
               />
-              <span
-                className="mono whitespace-nowrap transition-all duration-500 group-hover:tracking-[0.32em] group-hover:text-bone-50"
-                style={{ color: i === active ? "var(--bone-50)" : "var(--bone-200)" }}
-              >
-                0{i + 1} · {p.title}
-              </span>
             </button>
           ))}
         </nav>

@@ -5,9 +5,7 @@ import SplitText from "../system/SplitText";
 import MagneticButton from "../system/MagneticButton";
 
 const SOCIALS = [
-  { label: "Instagram", href: "#" },
-  { label: "Behance", href: "#" },
-  { label: "LinkedIn", href: "#" },
+  { label: "Instagram · @inna_krachun", href: "https://www.instagram.com/inna_krachun/" },
   { label: "Email", href: "mailto:www.inka3553@gmail.com" },
 ];
 
