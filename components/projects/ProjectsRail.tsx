@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import VVBoutique from "./VVBoutique";
@@ -10,12 +10,6 @@ import RailBackground from "./RailBackground";
 import RailBridge from "./RailBridge";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
-
-const PROJECTS = [
-  { id: "vv", title: "V&V Boutique" },
-  { id: "bee", title: "Beextrart" },
-  { id: "nex", title: "NexGen" },
-];
 
 declare global {
   interface Window {
@@ -37,7 +31,6 @@ function bell(progress: number, peak: number, width = 0.45): number {
 export default function ProjectsRail() {
   const root = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
 
   useEffect(() => {
     if (!root.current) return;
@@ -47,18 +40,6 @@ export default function ProjectsRail() {
       const sections = root.current!.querySelectorAll<HTMLElement>(".rail-section");
       const bg = bgRef.current;
       const layers = bg?.querySelectorAll<HTMLElement>(".bg-layer") ?? [];
-
-      // Activate side-index based on which project is centered
-      sections.forEach((s, i) => {
-        ScrollTrigger.create({
-          trigger: s,
-          start: "top 50%",
-          end: "bottom 50%",
-          onToggle: (st) => {
-            if (st.isActive) setActive(i);
-          },
-        });
-      });
 
       if (!bg || layers.length < 3) return;
 
@@ -117,16 +98,6 @@ export default function ProjectsRail() {
     return () => ctx.revert();
   }, []);
 
-  const goTo = (idx: number) => {
-    const el = document.getElementById(`project-${PROJECTS[idx].id}`);
-    if (!el) return;
-    if (window.__lenis) {
-      window.__lenis.scrollTo(el, { offset: -40, duration: 1.4 });
-    } else {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <section ref={root} className="relative w-full" aria-label="Selected work">
       <RailBackground ref={bgRef} />
@@ -164,44 +135,8 @@ export default function ProjectsRail() {
         </div>
       </div>
 
-      {/* Sticky clickable side index — sits on the RIGHT, just under the
-          ScrollProgress chapter rail so all the indicators live in one column.
-          Right-aligned to match the chapter rail's text alignment. */}
-      <div
-        className="pointer-events-none fixed right-5 z-40 hidden md:block"
-        style={{ top: "calc(50% + 110px)" }}
-      >
-        <div className="mb-3 ml-auto h-px w-12 bg-white/12" aria-hidden />
-        <nav
-          className="pointer-events-auto flex flex-col items-end gap-2"
-          aria-label="Project navigation"
-        >
-          {PROJECTS.map((p, i) => (
-            <button
-              key={p.id}
-              onClick={() => goTo(i)}
-              data-cursor="hover"
-              data-cursor-label="jump"
-              className="group flex items-center gap-3 py-1 text-right transition-opacity duration-500 ease-cinema"
-              style={{ opacity: i === active ? 1 : 0.45 }}
-            >
-              <span
-                className="mono whitespace-nowrap transition-all duration-500 group-hover:tracking-[0.32em] group-hover:text-bone-50"
-                style={{ color: i === active ? "var(--bone-50)" : "var(--bone-200)" }}
-              >
-                0{i + 1} · {p.title}
-              </span>
-              <span
-                className="block h-px transition-all duration-700 ease-cinema group-hover:!w-[44px]"
-                style={{
-                  width: i === active ? 36 : 12,
-                  background: i === active ? "var(--accent)" : "rgba(255,255,255,0.4)",
-                }}
-              />
-            </button>
-          ))}
-        </nav>
-      </div>
+      {/* Project nav has moved into ScrollProgress so chapters and projects
+          render as one continuous index on the right edge. */}
 
       {/* Project sections — all transparent so the unified bg shows through */}
       <div id="project-vv" className="rail-section relative z-[2]">

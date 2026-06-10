@@ -96,12 +96,10 @@ export default function Hero() {
         }}
       />
 
-      {/* Side eyebrows */}
+      {/* Side eyebrow — left only; the right "Scroll · Begin" was removed
+          per Inna's note: scroll affordance is implied, no need to label it. */}
       <div className="pointer-events-none absolute bottom-12 left-6 z-10 hidden text-[10px] uppercase tracking-[0.32em] text-bone-400 md:block md:left-12">
         Ch.01 — Entrance
-      </div>
-      <div className="pointer-events-none absolute bottom-12 right-6 z-10 hidden text-[10px] uppercase tracking-[0.32em] text-bone-400 md:block md:right-12">
-        Scroll · Begin
       </div>
 
       {/* Soft scrim behind the title — keeps chrome reflections from competing with type */}
@@ -186,27 +184,6 @@ export default function Hero() {
       {/* First-visit hint nudging interaction with the 3D form */}
       <HeroHint />
 
-      {/* Scroll cue */}
-      <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-center md:bottom-10">
-        <div className="mono mb-3 opacity-60">scroll</div>
-        <div className="relative mx-auto h-10 w-px overflow-hidden bg-white/10">
-          <span
-            className="absolute left-0 top-0 h-1/3 w-full"
-            style={{
-              background: "linear-gradient(180deg, var(--accent), transparent)",
-              animation: "scrollCue 2.4s var(--ease-cinema) infinite",
-            }}
-          />
-        </div>
-      </div>
-
-      <style jsx global>{`
-        @keyframes scrollCue {
-          0% { transform: translateY(-100%); opacity: 0; }
-          25% { opacity: 1; }
-          100% { transform: translateY(300%); opacity: 0; }
-        }
-      `}</style>
     </section>
   );
 }

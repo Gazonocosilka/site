@@ -10,43 +10,74 @@ const CHAPTERS = [
   { id: "contact", label: "Outro", short: "04" },
 ];
 
+// Project sub-items expand under the "Work" chapter so chapters and
+// projects render as one continuous, single-size index on the right edge.
+const PROJECTS = [
+  { id: "project-vv", label: "V&V Boutique", short: "01" },
+  { id: "project-bee", label: "Beextrart", short: "02" },
+  { id: "project-nex", label: "NexGen", short: "03" },
+];
+
 /**
- * Fixed right-edge scroll progress indicator with chapter labels.
- * - Shows the user where they are in the journey at all times.
- * - Each chapter label is clickable and smoothly scrolls there.
- * - Updates a thin vertical bar in real time based on document progress.
+ * Fixed right-edge scroll progress indicator.
+ *
+ * One continuous list of:
+ *   01 · Entrance
+ *   02 · Field Notes
+ *   03 · Work
+ *      01 · V&V Boutique     ← only visible while "Work" is active
+ *      02 · Beextrart        ← (so the rail doesn't grow indefinitely)
+ *      03 · NexGen
+ *   04 · Outro
+ *
+ * Every item uses the same font size and structure so the rail reads
+ * as one list, not two stacked navs. The progress bar lives on the right.
  */
 export default function ScrollProgress() {
   const pathname = usePathname();
   const [progress, setProgress] = useState(0);
   const [activeIdx, setActiveIdx] = useState(0);
-  const stops = useRef<Array<{ id: string; top: number }>>([]);
+  const [activeProjectIdx, setActiveProjectIdx] = useState(0);
+  const chapterStops = useRef<Array<{ id: string; top: number }>>([]);
+  const projectStops = useRef<Array<{ id: string; top: number }>>([]);
   const onHome = pathname === "/";
 
   useEffect(() => {
     if (!onHome) return;
+
     const refresh = () => {
-      const map: Array<{ id: string; top: number }> = [];
-      // hero is the first <section>
+      // Chapter stops (heuristic from existing implementation)
+      const chMap: Array<{ id: string; top: number }> = [];
       const sections = document.querySelectorAll<HTMLElement>("section");
       sections.forEach((s) => {
         const id = s.getAttribute("aria-label") || s.tagName.toLowerCase();
         let key = "";
         if (s.classList.contains("ambient-bg") && s.querySelector("h1")) key = "hero";
-        else if (s.querySelector('[class*="floating digital archive"]') || s.querySelector("h2")?.textContent?.includes("designer")) key = "about";
+        else if (
+          s.querySelector('[class*="floating digital archive"]') ||
+          s.querySelector("h2")?.textContent?.includes("designer")
+        )
+          key = "about";
         else if (id === "Selected work") key = "projects";
         else if (s.querySelector("h2")?.textContent?.toLowerCase().includes("create")) key = "contact";
-        if (key) map.push({ id: key, top: window.scrollY + s.getBoundingClientRect().top });
+        if (key) chMap.push({ id: key, top: window.scrollY + s.getBoundingClientRect().top });
       });
-      // fallback ordering by document position if heuristic missed
-      if (map.length < 4) {
-        map.length = 0;
+      if (chMap.length < 4) {
+        chMap.length = 0;
         sections.forEach((s, i) => {
           const id = CHAPTERS[i]?.id;
-          if (id) map.push({ id, top: window.scrollY + s.getBoundingClientRect().top });
+          if (id) chMap.push({ id, top: window.scrollY + s.getBoundingClientRect().top });
         });
       }
-      stops.current = map;
+      chapterStops.current = chMap;
+
+      // Project stops — straightforward, they have stable ids
+      const pjMap: Array<{ id: string; top: number }> = [];
+      PROJECTS.forEach((p) => {
+        const el = document.getElementById(p.id);
+        if (el) pjMap.push({ id: p.id, top: window.scrollY + el.getBoundingClientRect().top });
+      });
+      projectStops.current = pjMap;
     };
 
     refresh();
@@ -57,13 +88,21 @@ export default function ScrollProgress() {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       const y = window.scrollY;
       setProgress(Math.min(1, Math.max(0, y / Math.max(1, docH))));
-      // find active section: last stop whose top <= y + viewport/3
+
+      // Active chapter: last stop whose top <= y + viewport/3
       const probe = y + window.innerHeight / 3;
-      let idx = 0;
-      stops.current.forEach((s, i) => {
-        if (s.top <= probe) idx = i;
+      let chIdx = 0;
+      chapterStops.current.forEach((s, i) => {
+        if (s.top <= probe) chIdx = i;
       });
-      setActiveIdx(idx);
+      setActiveIdx(chIdx);
+
+      // Active project: same probe, last project whose top <= probe
+      let pjIdx = 0;
+      projectStops.current.forEach((s, i) => {
+        if (s.top <= probe) pjIdx = i;
+      });
+      setActiveProjectIdx(pjIdx);
     };
 
     onScroll();
@@ -79,16 +118,25 @@ export default function ScrollProgress() {
 
   if (!onHome) return null;
 
-  const goTo = (idx: number) => {
-    const stop = stops.current[idx];
+  const goToChapter = (idx: number) => {
+    const stop = chapterStops.current[idx];
     if (!stop) return;
     const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, opts?: object) => void } }).__lenis;
-    if (lenis) {
-      lenis.scrollTo(stop.top, { duration: 1.5 });
-    } else {
-      window.scrollTo({ top: stop.top, behavior: "smooth" });
-    }
+    if (lenis) lenis.scrollTo(stop.top, { duration: 1.5 });
+    else window.scrollTo({ top: stop.top, behavior: "smooth" });
   };
+
+  const goToProject = (idx: number) => {
+    const stop = projectStops.current[idx];
+    if (!stop) return;
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, opts?: object) => void } }).__lenis;
+    if (lenis) lenis.scrollTo(stop.top - 40, { duration: 1.4 });
+    else window.scrollTo({ top: stop.top - 40, behavior: "smooth" });
+  };
+
+  // Project list only expands while user is in the Work chapter.
+  // "projects" is the 3rd chapter (index 2). Keep it open while active.
+  const projectsExpanded = activeIdx === 2;
 
   return (
     <nav
@@ -96,14 +144,15 @@ export default function ScrollProgress() {
       className="pointer-events-none fixed right-5 top-1/2 z-30 hidden -translate-y-1/2 md:flex"
     >
       <div className="pointer-events-auto flex items-center gap-4">
-        {/* Chapter labels (rotated) */}
-        <ul className="flex flex-col items-end gap-5">
+        {/* Unified index — chapters with projects nested under Work */}
+        <ul className="flex flex-col items-end gap-3">
           {CHAPTERS.map((c, i) => {
             const active = i === activeIdx;
+            const isWork = c.id === "projects";
             return (
               <li key={c.id}>
                 <button
-                  onClick={() => goTo(i)}
+                  onClick={() => goToChapter(i)}
                   data-cursor="hover"
                   data-cursor-label="jump"
                   className="group flex items-baseline gap-2 transition-opacity duration-500 ease-cinema"
@@ -118,20 +167,62 @@ export default function ScrollProgress() {
                   >
                     {c.label}
                   </span>
-                  <span
-                    className="mono opacity-50"
-                    style={{ fontSize: 9 }}
-                  >
+                  <span className="mono opacity-50" style={{ fontSize: 9 }}>
                     {c.short}
                   </span>
                 </button>
+
+                {/* Project sub-list — only renders inside Work, animated open/close */}
+                {isWork && (
+                  <div
+                    className="overflow-hidden transition-[max-height,opacity,margin] duration-700 ease-cinema"
+                    style={{
+                      maxHeight: projectsExpanded ? 200 : 0,
+                      opacity: projectsExpanded ? 1 : 0,
+                      marginTop: projectsExpanded ? 10 : 0,
+                    }}
+                  >
+                    <ul className="flex flex-col items-end gap-2.5 pr-3">
+                      {PROJECTS.map((p, pi) => {
+                        const pActive = pi === activeProjectIdx;
+                        return (
+                          <li key={p.id}>
+                            <button
+                              onClick={() => goToProject(pi)}
+                              data-cursor="hover"
+                              data-cursor-label="jump"
+                              className="group flex items-baseline gap-2 transition-opacity duration-500 ease-cinema"
+                              style={{ opacity: pActive ? 1 : 0.4 }}
+                            >
+                              <span
+                                className="mono whitespace-nowrap transition-all duration-500 group-hover:tracking-[0.32em]"
+                                style={{
+                                  color: pActive ? "var(--bone-50)" : "var(--bone-200)",
+                                  fontSize: 11,
+                                }}
+                              >
+                                {p.label}
+                              </span>
+                              <span className="mono opacity-50" style={{ fontSize: 9 }}>
+                                {p.short}
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
               </li>
             );
           })}
         </ul>
 
-        {/* Progress bar */}
-        <div className="relative h-[140px] w-px bg-white/10">
+        {/* Progress bar — grows with content so it can reach the nested items */}
+        <div
+          className="relative w-px bg-white/10 transition-[height] duration-700 ease-cinema"
+          style={{ height: projectsExpanded ? 220 : 140 }}
+        >
           <span
             className="absolute left-1/2 top-0 -translate-x-1/2 rounded-full"
             style={{
